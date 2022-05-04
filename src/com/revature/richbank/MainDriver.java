@@ -14,11 +14,11 @@ public class MainDriver {
 
     public static void main(String[] str) {
 
-        System.out.println("MainDriver:: 1. AppState instantiated");
+        System.out.println("MainDriver::main() 1. AppState instantiated");
         AppState appState = new AppState();
 
 
-        System.out.println("MainDriver:: 2. Application Startup");
+        System.out.println("MainDriver::main() 2. Application Startup");
         appState.startup();
     }
 

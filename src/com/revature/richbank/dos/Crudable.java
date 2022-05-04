@@ -5,7 +5,7 @@ public interface Crudable<T> {
 
     T create(T newObject);
 
-    T[] findAlll();
+    T[] findAll();
 
     T findById(String id);
 

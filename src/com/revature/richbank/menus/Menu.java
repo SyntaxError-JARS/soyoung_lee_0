@@ -18,6 +18,6 @@ public abstract class Menu {
         return name;
     }
 
-    public String getRoute() {}
+    public String getRoute() { return route;}
     public abstract void render() throws Exception;
 }

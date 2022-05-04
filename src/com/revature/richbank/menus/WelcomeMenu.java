@@ -43,19 +43,20 @@ public class WelcomeMenu extends Menu {
                 break;
             case "2":
                 System.out.println("User has selected register...");
-                register(); // ctrl + left-click
+                //register(); // ctrl + left-click
                 break;
             case "3":
-                System.out.println("User has selected view/create pokemon...");
-                pokemonInput(); // ctrl + left-click
+                System.out.println("User has selected view/create account...");
+                //pokemonInput(); // ctrl + left-click
                 break;
             case "4":
-                System.out.println("User has selected view trainers...");
+                System.out.println("User has selected view transcations under user's account...");
                 break;
             case "5":
                 System.out.println("User has selected exit...");
                 // shutdown application
                 // exit 0
+                shutdown();
                 break;
             default: // why have a default? catch all if input doesn't match any case above.
                 System.out.println("No valid user input provide");

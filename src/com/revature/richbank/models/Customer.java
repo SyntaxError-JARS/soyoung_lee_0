@@ -5,13 +5,22 @@ public class Customer {
     private String email_1       ;
     private String phone_1       ;
     private String address       ;
-
     private String login_id      ;
-
     private String login_password;
     private String login_date    ;
-
     private boolean block    ;
+
+    public Customer(String customer_name, String email_1, String phone_1, String address, String login_id, String login_password, String login_date, boolean block) {
+        super();
+        this.customer_name = customer_name;
+        this.email_1 = email_1;
+        this.phone_1 = phone_1;
+        this.address = address;
+        this.login_id = login_id;
+        this.login_password = login_password;
+        this.login_date = login_date;
+        this.block = block;
+    }
 
     public String getCustomer_name() {
         return customer_name;
