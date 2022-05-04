@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8d0ec865-0296-4581-b33a-8076bee27ae8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/com/revature/richbank/dos/AccountDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/revature/richbank/dos/TransDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/MainDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/MainDriver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/dos/Crudable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/dos/Crudable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/dos/CustomerDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/dos/CustomerDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/menus/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/menus/Menu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/menus/RegisterMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/menus/RegisterMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/menus/WelcomeMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/menus/WelcomeMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/models/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/models/Customer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/services/CustermerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/services/CustermerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/util/AppState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/util/AppState.java" afterDir="false" />
-    </list>
+    <list default="true" id="8d0ec865-0296-4581-b33a-8076bee27ae8" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
