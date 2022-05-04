@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8d0ec865-0296-4581-b33a-8076bee27ae8" name="Changes" comment="" />
+    <list default="true" id="8d0ec865-0296-4581-b33a-8076bee27ae8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/resources/db.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/revature/richbank/util/ConnectionFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/soyoung_lee_p0.iml" beforeDir="false" afterPath="$PROJECT_DIR$/soyoung_lee_p0.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/MainDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/MainDriver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/dos/AccountDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/dos/AccountDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/dos/Crudable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/dos/Crudable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/dos/CustomerDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/dos/CustomerDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/dos/TransDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/dos/TransDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/menus/RegisterMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/menus/RegisterMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/menus/WelcomeMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/menus/WelcomeMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/models/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/models/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/models/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/models/Customer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/models/Trans.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/models/Trans.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/services/CustermerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/services/CustomerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/util/AppState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/util/AppState.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,18 +48,46 @@
     <option name="showMembers" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/karr1/OneDrive/Desktop/Revature/poke_project&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "last_opened_file_path": "C:/Users/karr1/OneDrive/Desktop/soyoung_lee_p0/resources/postgresql-42.3.3.jar",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2"
+  },
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "PLAIN_TEXT"
+    ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.revature.richbank.menus" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="MainDriver" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.revature.richbank.MainDriver" />
+      <module name="soyoung_lee_p0" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.revature.richbank.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.MainDriver" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -64,16 +110,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/revature/richbank/MainDriver.java</url>
-          <line>23</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

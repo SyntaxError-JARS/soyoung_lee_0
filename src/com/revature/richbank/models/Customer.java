@@ -22,6 +22,10 @@ public class Customer {
         this.block = block;
     }
 
+    public Customer() {
+        super();
+    }
+
     public String getCustomer_name() {
         return customer_name;
     }

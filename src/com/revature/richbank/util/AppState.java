@@ -36,6 +36,7 @@ public class AppState {
     }
 
     public void startup(){
+
         welcomMenu.render();
     }
 

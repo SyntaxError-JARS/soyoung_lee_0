@@ -1,6 +1,10 @@
 package com.revature.richbank.dos;
 
-public class TransDao implements Crudable {
+import com.revature.richbank.models.Trans;
+
+import java.io.IOException;
+
+public class TransDao implements Crudable<Trans> {
 
     @Override
     public Trans create(Trans newTrans) {

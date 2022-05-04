@@ -1,23 +1,27 @@
 package com.revature.richbank.dos;
 
-public class AccountDao implements Crudable {
+import com.revature.richbank.models.Account;
+
+import java.io.IOException;
+
+public class AccountDao implements Crudable<Account> {
     @Override
-    public Object create(Object newObject) {
+    public Account create(Account newAccount) {
         return null;
     }
 
     @Override
-    public Object[] findAll() {
-        return new Object[0];
+    public Account[] findAll() throws IOException {
+        return new Account[0];
     }
 
     @Override
-    public Object findById(String id) {
+    public Account findById(String id) {
         return null;
     }
 
     @Override
-    public boolean update(Object updateObject) {
+    public boolean update(Account updateAccount) {
         return false;
     }
 

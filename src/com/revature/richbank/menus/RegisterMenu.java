@@ -53,7 +53,7 @@ public class RegisterMenu extends Menu {
 
         // Trainer trainer = new Trainer(); // why is this red?? there isn't a No-Arg constructor
         // What's happening here? Intialization a new Trainer object in memory
-        Customer newCustomer = new Customer(customer_name, email_1, phone_1, address, login_id, login_password, "05/04/2022", false)
+        Customer newCustomer = new Customer(customer_name, email_1, phone_1, address, login_id, login_password, "05/04/2022", false);
         System.out.println("Here is the trainer that was provided by the user: " + newCustomer);
         customerService.registerCustomer(newCustomer);
     }

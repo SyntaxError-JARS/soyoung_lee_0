@@ -11,7 +11,12 @@ public class Account {
     private String customer_id_1;
     private String customer_id_2;
 
+    public Account(){
+        super();
+    }
+
     public Account(int account_id, String account_number, String account_type, String first_date, String last_date, double interest, double total, String customer_id_1, String customer_id_2) {
+        super();
         this.account_id = account_id;
         this.account_number = account_number;
         this.account_type = account_type;

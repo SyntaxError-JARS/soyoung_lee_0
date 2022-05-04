@@ -1,12 +1,9 @@
 package com.revature.richbank; // determining the package structure for the output
 
-// importing the class from other packages to be leveraged
-import com.revature.pokedex.models.Pokemon;
-import com.revature.pokedex.models.Trainer;
 
 // importing everything from java.io.
 // this is a library that's provided by....JRE
-import java.io.*;
+import com.revature.richbank.util.AppState;
 
 // What's this?
 // Creating a class called MainDriver

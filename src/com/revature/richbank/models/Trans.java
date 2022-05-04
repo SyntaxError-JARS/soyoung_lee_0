@@ -1,22 +1,19 @@
 package com.revature.richbank.models;
 
 public class Trans {
-    private int     trans_id       ;
-    private String  account_number ;
-    private String  trans_date     ;
-    private String  trans_type     ;
-    private boolean success        ;
-    private int     amount         ;
+    private int trans_id;
+    private String account_number;
+    private String trans_date;
+    private String trans_type;
+    private int amount;
 
-    public Trans (int trans_id, String account_number, String trans_date, String trans_type, boolean success, int amount) {
+    public Trans(int trans_id, String account_number, String trans_date, String trans_type, int amount) {
         this.trans_id = trans_id;
         this.account_number = account_number;
         this.trans_date = trans_date;
         this.trans_type = trans_type;
-        this.success = success;
         this.amount = amount;
     }
-
 
     public int getTrans_id() {
         return trans_id;
@@ -50,14 +47,6 @@ public class Trans {
         this.trans_type = trans_type;
     }
 
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
     public int getAmount() {
         return amount;
     }
@@ -73,9 +62,7 @@ public class Trans {
                 ", account_number='" + account_number + '\'' +
                 ", trans_date='" + trans_date + '\'' +
                 ", trans_type='" + trans_type + '\'' +
-                ", success=" + success +
                 ", amount=" + amount +
                 '}';
     }
 }
-                                                                                                                   7
