@@ -1,6 +1,9 @@
 package com.revature.richbank.models;
 
 public class Customer {
+
+
+    // Encapsulatioed these variables and attributes. It's
     private String customer_name ;
     private String email_1       ;
     private String phone_1       ;
@@ -9,6 +12,13 @@ public class Customer {
     private String login_password;
     private String login_date    ;
     private boolean block    ;
+
+    /*
+     * Constructor is another pillar of Polymorphism.
+     *  --- Method overloading
+     *          same method signature ( same return type, same name )
+     *          parameter change
+     */
 
     public Customer(String customer_name, String email_1, String phone_1, String address, String login_id, String login_password, String login_date, boolean block) {
         super();
@@ -24,6 +34,11 @@ public class Customer {
 
     public Customer() {
         super();
+    }
+
+    public Customer(String login_id, String login_password) {
+        this.login_id = login_id;
+        this.login_password = login_password;
     }
 
     public String getCustomer_name() {

@@ -1,14 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="8d0ec865-0296-4581-b33a-8076bee27ae8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/menus/UpdateMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/dos/CustomerDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/dos/CustomerDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/menus/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/menus/Menu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/menus/RegisterMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/menus/RegisterMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/menus/WelcomeMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/menus/WelcomeMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/services/CustomerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/services/CustomerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/util/AppState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/revature/richbank/util/AppState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/db.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/db.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/postgresql-42.3.3.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/soyoung_lee_p0.iml" beforeDir="false" afterPath="$PROJECT_DIR$/soyoung_lee_p0.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/MainDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/MainDriver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/dos/AccountDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/dos/AccountDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/dos/Crudable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/dos/Crudable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/dos/CustomerDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/dos/CustomerDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/dos/TransDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/dos/TransDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/menus/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/menus/Menu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/menus/RegisterMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/menus/RegisterMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/menus/WelcomeMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/menus/WelcomeMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/models/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/models/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/models/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/models/Customer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/models/Trans.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/models/Trans.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/services/CustomerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/services/CustomerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/util/AppState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/util/AppState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/revature/richbank/util/ConnectionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/util/ConnectionFactory.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +64,8 @@
     "last_opened_file_path": "C:/Users/karr1/OneDrive/Desktop/soyoung_lee_p0/resources/postgresql-42.3.3.jar",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2"
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "MavenSettings"
   },
   "keyToStringList": {
     "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
@@ -57,6 +76,9 @@
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.revature.richbank.menus" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\karr1\OneDrive\Desktop\soyoung_lee_p0\src\main\resources" />
     </key>
   </component>
   <component name="RunManager">

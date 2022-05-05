@@ -19,8 +19,16 @@ public class CustomerService {
 
             for (int i = 0; i < customers.length; i++) {
                 Customer customer = customers[i];
-                System.out.println(customer.toString());
+                if ( customer != null )
+                        System.out.println(customer);
             }
+
+            // For Each loop
+            // for (Object customer : customers )
+            //      if ( customer != null ) System.out.println((Customer)customer);
+            for (Customer customer : customers)   // customer indicates a single element in the array customers
+                if ( customer != null ) System.out.println(customer);
+
         } catch ( NullPointerException e){
             //e.printStackTrace();
         }

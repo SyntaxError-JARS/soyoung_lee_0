@@ -19,11 +19,14 @@ public class WelcomeMenu extends Menu {
 
     @Override
     public void render() throws Exception {
+        System.out.println("WelcomeMenu::render() : rendering Menu");
+
         String welcome = "Welcome to the Rich Bank!";
         String option1 = "1) Login";
         String option2 = "2) Register";
+
         String option3 = "3) View/Create your account";
-        String option4 = "4) View all transaction";
+        String option4 = "4) View all transaction for your account";
         String option5 = new String("5) Exit the Rich Bank"); // This is the same as ""
 
 

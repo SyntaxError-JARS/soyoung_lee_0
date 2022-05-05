@@ -19,17 +19,15 @@ public class CustomerDao implements Crudable<Customer> {
             // Because of SQL INJECTION
             // String sql = "insert into customer values ("
 
-            String sql = "insert into customer values (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "insert into customer ( customer_name, email_1, phone_1, address, login_id, login_password ) values (?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
 
-            ps.setString(1, "default");
-            ps.setString(2, newCustomer.getCustomer_name());
-            ps.setString(3, newCustomer.getEmail_1());
-            ps.setString(4, newCustomer.getPhone_1());
-            ps.setString(5, newCustomer.getAddress());
-            ps.setString(6, newCustomer.getLogin_id());
-            ps.setString(7, newCustomer.getLogin_password());
-            ps.setString(8, "default");
+            ps.setString(1, newCustomer.getCustomer_name());
+            ps.setString(2, newCustomer.getEmail_1());
+            ps.setString(3, newCustomer.getPhone_1());
+            ps.setString(4, newCustomer.getAddress());
+            ps.setString(5, newCustomer.getLogin_id());
+            ps.setString(6, newCustomer.getLogin_password());
 
             int checkInsert = ps.executeUpdate();
             if (checkInsert == 0) {
@@ -129,8 +127,36 @@ public class CustomerDao implements Crudable<Customer> {
     public boolean update(Customer updateCustomer) {
 
         System.out.println("CustomerDao::update() : find a customer by login_id");
+        System.out.println("CustomerDao::create() : creating new customer");
 
-        return false;
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
+
+            // YOU NEVER NEVER NEVER USE THIS DIRECT STATEMENT
+            // Because of SQL INJECTION
+            // String sql = "insert into customer values ("
+
+            String sql = "update set customer_name = ?, email_1 = ?, phone_1 = ?, address = ? where login_id = ?";
+            // UPDATE mytable SET a = 5, b = 3, c = 1 WHERE a > 0;
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, updateCustomer.getCustomer_name());
+            ps.setString(2, updateCustomer.getEmail_1());
+            ps.setString(3, updateCustomer.getPhone_1());
+            ps.setString(4, updateCustomer.getAddress());
+            ps.setString(5, updateCustomer.getLogin_id());
+            //ps.setString(6, updateCustomer.getLogin_password());
+
+            int checkUpdate = ps.executeUpdate();
+            if (checkUpdate == 0) {
+                throw new RuntimeException();
+            }
+
+        } catch (SQLException | RuntimeException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
 
@@ -150,7 +176,7 @@ public class CustomerDao implements Crudable<Customer> {
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection();) {
 
-            String sql = "select count(*) as count from customer where login_id = ?";
+            String sql = "select login_id as count from customer where login_id = ?";
 
             PreparedStatement ps = conn.prepareStatement(sql);
 

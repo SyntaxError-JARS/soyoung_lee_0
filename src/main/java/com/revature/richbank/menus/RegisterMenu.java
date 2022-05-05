@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+
+// Inheritance from menu abstract class: another pillar of OOP
 public class RegisterMenu extends Menu {
 
     private CustomerService customerService = new CustomerService();
@@ -18,6 +20,8 @@ public class RegisterMenu extends Menu {
 
     @Override
     public void render() throws Exception {
+        System.out.println("RegisterMenu::render() : rendering Menu");
+
         System.out.println("What is your name?");
         String customer_name = terminalReader.readLine();
 
@@ -39,8 +43,8 @@ public class RegisterMenu extends Menu {
         System.out.println("Re-enter password");
         String passwordCheck = terminalReader.readLine();
 
-        System.out.println("DOB?");
-        String dob = terminalReader.readLine();
+        // System.out.println("DOB?");
+        // String dob = terminalReader.readLine();
 
 
         // What's happening here??

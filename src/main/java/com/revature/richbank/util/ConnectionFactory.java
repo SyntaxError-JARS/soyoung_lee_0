@@ -53,7 +53,7 @@ public class ConnectionFactory {
     //This is specially a singleton bc of the private constructor
     private ConnectionFactory() {
         try {
-            prop.load(new FileReader("resources/db.properties"));
+            prop.load(new FileReader("src/main/resources/db.properties"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -95,16 +95,15 @@ public class ConnectionFactory {
         // String url = "jdbc:postgresql://localhost:5432/postgres";
 
         // TODO: WE NEED TO FIX THIS FOR SECURITY
-        // String url = "jdbc:postgresql://localhost:5432/postgres?currentSchema=test_slee_p0";
-        // String user = "postgres";
-        // String password = "password";
+        //String url = "jdbc:postgresql://localhost:5432/postgres?currentSchema=test_slee_p0";
+        //String user = "postgres";
+        //String password = "password";
 
         try {
             // conn = DriverManager.getConnection(url, user, password);
-            conn =
-                    DriverManager.getConnection(prop.getProperty("url"),
-                            prop.getProperty("user"),
-                            prop.getProperty("password"));
+            conn = DriverManager.getConnection(prop.getProperty("url"),
+                   prop.getProperty("user"),
+                   "password");
         } catch (SQLException e) {
             e.printStackTrace();
         }
