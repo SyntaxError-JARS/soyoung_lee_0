@@ -8,7 +8,6 @@ import java.sql.*;
 
 public class CustomerDao implements Crudable<Customer> {
 
-    private CustomerDao customerDao = new CustomerDao();
 
     @Override
     public Customer create(Customer newCustomer) {
@@ -21,7 +20,7 @@ public class CustomerDao implements Crudable<Customer> {
             // String sql = "insert into customer values ("
 
             String sql = "insert into customer values (?, ?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement ps = connectionFactory.preparedStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setString(1, "default");
             ps.setString(2, newCustomer.getCustomer_name());
@@ -87,7 +86,7 @@ public class CustomerDao implements Crudable<Customer> {
             return null;
         }
         System.out.println("Returning customers information to user.");
-        return trainers;
+        return customers;
     }
 
 
@@ -103,7 +102,7 @@ public class CustomerDao implements Crudable<Customer> {
 
             PreparedStatement ps = conn.prepareStatement(sql);
 
-            ps.setInt(1, Integer.parseInt(id)); // Wrapper class
+            ps.setString(1, login_id); // Wrapper class
             ResultSet rs = ps.executeQuery(); // remember DQL, select is only keywords for Query
 
             Customer customer = new Customer();
@@ -116,12 +115,12 @@ public class CustomerDao implements Crudable<Customer> {
             customer.setLogin_id(rs.getString("login_id"));
             customer.setLogin_password(rs.getString("login_password"));
 
-
+            return customer;
 
         } catch (SQLException e) {
             return null;
         }
-        return null;
+
     }
 
 
@@ -151,14 +150,14 @@ public class CustomerDao implements Crudable<Customer> {
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection();) {
 
-            String sql = "select * from customer where login_id = ?";
+            String sql = "select count(*) as count from customer where login_id = ?";
 
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setString(1, login_id); // Wrapper class
             ResultSet rs = ps.executeQuery(); // remember DQL, select is only keywords for Query
-
-            if (rs.next() == true) {
+System.out.println("CustomerDao::checkLogin_ID() : got a ResultSet");
+            if ( rs.next() ) {
                 System.out.println("Same login ID is already exist!!!");
             }
 

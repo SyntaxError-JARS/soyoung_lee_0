@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class RegisterMenu extends Menu {
 
-    private CustomerService customerService = new CutomerService();
+    private CustomerService customerService = new CustomerService();
 
     public RegisterMenu (BufferedReader terminalReader) {
         super("Register Menu", "/register", terminalReader);

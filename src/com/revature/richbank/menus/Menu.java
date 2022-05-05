@@ -7,7 +7,7 @@ public abstract class Menu {
     protected  String route;
     protected  BufferedReader terminalReader;
 
-    public Menu(String name, String route, BufferedReader terminalReader){
+    public Menu(String name, String route, BufferedReader terminalReader) {
         super();
         this.name = name;
         this.route = route;

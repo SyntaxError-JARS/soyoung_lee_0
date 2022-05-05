@@ -2,7 +2,8 @@ package com.revature.richbank.util;
 
 import com.revature.richbank.menus.RegisterMenu;
 import com.revature.richbank.menus.WelcomeMenu;
-import com.revature.richbank.models.Customer;
+
+
 import com.revature.richbank.services.CustomerService;
 
 import java.io.BufferedReader;
@@ -19,28 +20,35 @@ public class AppState {
 
     // default constructor.
     public AppState() {
-        System.out.println("AppState:: constructor.");
+        System.out.println("AppState::AppState() constructor.");
 
         isRunning = true;
         BufferedReader terminalReader = new BufferedReader(new InputStreamReader(System.in));
         CustomerService customerService = new CustomerService();
 
-        //
+        // TODO: Why are we doing all of this?
         this.welcomeMenu = new WelcomeMenu(terminalReader, customerService);
-        BufferedReader terminalReader = new BufferedReader(new InputStreamReader(System.in));
-        CustomerService customerService = new CustomerService();
-
-        WelcomeMenu welcomeMenu = new WelcomeMenu (terminalReader, customerService);
-        RegisterMenu registerMenu = new RegisterMenu(terminalReader);
+        this.registerMenu = new RegisterMenu(terminalReader);
 
     }
 
     public void startup(){
+        System.out.println("AppState::startup() : ");
+        try {
+            while (isRunning) {
+                System.out.println("AppState::startup() : Application successfully started!");
+                registerMenu.render();
+                // comment in and out based on what you want to use
+                // welcomeMenu.render();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        welcomMenu.render();
     }
 
-    public void shutdown() {
-
+    public static void shutdown() {
+        isRunning = false;
+        System.out.println("AppState::shutdown() : Application shutting down...");
     }
 }

@@ -1,5 +1,6 @@
 package com.revature.richbank.services;
 
+
 import com.revature.richbank.dos.CustomerDao;
 import com.revature.richbank.models.Customer;
 
@@ -20,7 +21,7 @@ public class CustomerService {
                 Customer customer = customers[i];
                 System.out.println(customer.toString());
             }
-        } catch ( IOException | NullPointerException e){
+        } catch ( NullPointerException e){
             //e.printStackTrace();
         }
     }

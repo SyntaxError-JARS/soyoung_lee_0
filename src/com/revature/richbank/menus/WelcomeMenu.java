@@ -1,19 +1,20 @@
 package com.revature.richbank.menus;
 
+import com.revature.richbank.services.CustomerService;
+
 import java.io.BufferedReader;
-import java.io.IOException;
 
-import com.revature.richbank.services.CustomerSerivce;
-
+import static com.revature.richbank.util.AppState.shutdown;
 
 public class WelcomeMenu extends Menu {
 
-    private CustomerSerivce customerSerivce;
+    private CustomerService customerSerivce;
 
-    public WelcomeMenu(BufferedReader terminalReader,  CustomerSerivce customerSerivce){
-        super("Welcome Menu", "/welcome", terminalReader);
+    public WelcomeMenu(BufferedReader terminalReader, CustomerService customerSerivce) {
+        super("Welcome", "/welcome", terminalReader);
         this.customerSerivce = customerSerivce;
     }
+
 
 
     @Override
