@@ -18,14 +18,15 @@ Design Pattern
     Singleton Design Pattern
 
     - Creational Pattern
-    - Resticts that only a single instance of this class can be made within the appllication
-    - Constructor can not be invoked out side of this class
+    - Restricts that only a single instance of this class can be made within the application.
+    - Constructor can not be invoked from the outside of this class
+            -> private
     - Eager or Lazy singleton
 -----------------------------------------
     Factory Design Pattern
 
     - Creational Pattern
-    - used to abstract away the createign/instantiation of this class
+    - used to abstract away the creating/instantiation of this class
 -----------------------------------------
 
 
@@ -42,7 +43,7 @@ public Connection getConnection()
  */
 public class ConnectionFactory {
 
-    // instead Eager Singleton - we will have only one instance
+    // TODO : instead Eager Singleton - we will have only one instance
     private static final ConnectionFactory connectionFactory = new ConnectionFactory();
 
     // Using this for safety reason --- property files

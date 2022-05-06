@@ -1,15 +1,16 @@
 package com.revature.richbank.menus;
 
+import com.revature.richbank.models.Account;
 import com.revature.richbank.models.Customer;
 import com.revature.richbank.services.CustomerService;
 
 import java.io.BufferedReader;
 
-public class UpdateMenu extends Menu {
+public class CreateAccountMenu extends Menu {
 
     private CustomerService customerService = new CustomerService();
 
-    public UpdateMenu (BufferedReader terminalReader) {
+    public CreateAccountMenu(BufferedReader terminalReader) {
         super("Update Menu", "/update", terminalReader);
     }
 
@@ -30,12 +31,27 @@ public class UpdateMenu extends Menu {
         if ( customer != null ) {
             System.out.println("Great! You successfully login with your ID and Password!");
 
-            showCustomerInfo(customer);
+            String welcome = "If you want to make an account in Rich Bank,";
+            String option1 = "please select your account type first";
+            String option2 = "1) Deposit";
+            String option3 = "2) Checking";
 
-            System.out.println("Please your new password?");
-            login_password = terminalReader.readLine();
+            System.out.printf("%s \n %s \n %s \n %s \n", welcome, option1, option2, option3).println();
 
-            System.out.println("Re-enter password");
+
+            String account_input = terminalReader.readLine();
+
+            Account newAccount = new Account();
+            if(account_input.equals("1")) newAccount.setAccount_type("deposit");
+            else newAccount.setAccount_type("checking");
+            newAccount
+
+
+                AccountService.create()
+
+
+
+            System.out.println("Enter the amount of money you want deposit today: ");
             String passwordCheck = terminalReader.readLine();
 
             if (!login_password.equals(passwordCheck)) { // password != passwordCheck
@@ -53,7 +69,8 @@ public class UpdateMenu extends Menu {
 
         } else  {
             System.out.println("You failed to login with your ID and password! ");
-            System.out.println("Please! Check your ID and paassword!");
+            System.out.println("Please! Check your ID and password!\n\n");
+            System.out.println("If you didn't register yet...please register first!!!")
         }
 
 

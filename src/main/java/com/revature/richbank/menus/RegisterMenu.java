@@ -1,5 +1,7 @@
 package com.revature.richbank.menus;
 
+import com.revature.richbank.exceptions.InvalidRequestException;
+import com.revature.richbank.exceptions.ResourcePersistenceException;
 import com.revature.richbank.models.Customer;
 import com.revature.richbank.services.CustomerService;
 
@@ -59,7 +61,12 @@ public class RegisterMenu extends Menu {
         // What's happening here? Intialization a new Trainer object in memory
         Customer newCustomer = new Customer(customer_name, email_1, phone_1, address, login_id, login_password, false);
         System.out.println("Here is the customer that was provided by the user: " + newCustomer);
-        customerService.registerCustomer(newCustomer);
+        try {
+            customerService.registerCustomer(newCustomer);
+        } catch (InvalidRequestException | ResourcePersistenceException e) {
+            e.getMessage();
+            e.getStackTrace();
+        }
     }
 }
 

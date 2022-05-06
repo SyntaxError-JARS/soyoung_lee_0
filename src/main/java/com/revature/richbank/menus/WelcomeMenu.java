@@ -1,6 +1,7 @@
 package com.revature.richbank.menus;
 
 import com.revature.richbank.services.CustomerService;
+import com.revature.richbank.util.logging.Logger;
 
 import java.io.BufferedReader;
 
@@ -8,11 +9,15 @@ import static com.revature.richbank.util.AppState.shutdown;
 
 public class WelcomeMenu extends Menu {
 
-    private CustomerService customerSerivce;
+    private CustomerService customerService;
 
-    public WelcomeMenu(BufferedReader terminalReader, CustomerService customerSerivce) {
+    private final Logger logger ;
+
+
+    public WelcomeMenu(BufferedReader terminalReader, CustomerService customerService, Logger logger) {
         super("Welcome", "/welcome", terminalReader);
-        this.customerSerivce = customerSerivce;
+        this.customerService = customerService;
+        this.logger = logger;
     }
 
 
@@ -67,6 +72,7 @@ public class WelcomeMenu extends Menu {
                 break;
             case "5":
                 System.out.println("User has selected view all transactions for user's account...");
+                System.out.println("===    m@.@m    === Under Construction ===          m@.@m        ===");
                 break;
             case "6":
                 System.out.println("User has selected exit...");

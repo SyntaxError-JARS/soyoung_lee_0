@@ -2,6 +2,7 @@ package com.revature.richbank.services;
 
 
 import com.revature.richbank.dos.CustomerDao;
+import com.revature.richbank.exceptions.InvalidRequestException;
 import com.revature.richbank.models.Customer;
 
 import java.io.IOException;
@@ -37,14 +38,15 @@ public class CustomerService {
     }
 
     public Customer readACustomer(String login_id, String login_password){
-        System.out.println("CustomerService::readACustomer() : reading Customers in file database");
+        System.out.println("CustomerService::readACustomer() : reading a Customers with id and password in file database");
 
         Customer customer = null;
 
         try {
             customer = customerDao.findById(login_id, login_password);
+            //customer = customerDao.findById(login_id);
 
-            if ( customer != null ) System.out.println(customer);
+            if ( customer != null ) System.out.println("CustomerService::readACustomer() : " + customer);
 
         } catch ( NullPointerException e){
             //e.printStackTrace();
@@ -64,8 +66,8 @@ public class CustomerService {
         System.out.println("CustomerService::registerCustomer() : Customer trying to be registered: " + newCustomer);
 
         if(!validateCustomerInput(newCustomer)){ // checking if false
-            System.out.println("User was not validated");
-            throw new RuntimeException();
+            //System.out.println("User was not validated");
+            throw new InvalidRequestException("User was not validated");
         }
 
         // TODO: Will implement with JDBC (connecting to our database)
@@ -91,14 +93,13 @@ public class CustomerService {
         // TODO: Will implement with JDBC (connecting to our database)
         validateLogin_IDNotUsed(updateCustomer.getLogin_id());
 
-        Customer persistedCustomer = customerDao.update(updateCustomer);
-
-        if(persistedCustomer == null){
+        if( !customerDao.update(updateCustomer) ){
             throw new RuntimeException();
         }
-        System.out.println("CustomerService::registerCustomer() : Customer has been persisted: " + persistedCustomer);
+        System.out.println("CustomerService::updateCustomer() : Customer has been updated: " + updateCustomer);
         return true;
     }
+
     public boolean isValidEmailAddress(String email) {
 
         String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";

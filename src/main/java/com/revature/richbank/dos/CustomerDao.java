@@ -3,7 +3,6 @@ package com.revature.richbank.dos;
 import com.revature.richbank.models.Customer;
 import com.revature.richbank.util.ConnectionFactory;
 
-import java.io.IOException;
 import java.sql.*;
 
 public class CustomerDao implements Crudable<Customer> {
@@ -105,7 +104,7 @@ public class CustomerDao implements Crudable<Customer> {
 
             Customer customer = new Customer();
 
-            // column lable must match table column name
+            // column label must match table column name
             customer.setCustomer_id(Integer.toString(rs.getInt("customer_id")));
             customer.setCustomer_name(rs.getString("customer_name"));
             customer.setEmail_1(rs.getString("email_1"));
@@ -125,7 +124,7 @@ public class CustomerDao implements Crudable<Customer> {
 
     public Customer findById(String login_id, String login_password) {
 
-        System.out.println("CustomerDao::findById() : find a customer by login_id");
+        System.out.println("CustomerDao::findById() : find a customer by login_id and password");
 
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection();) {
@@ -139,6 +138,7 @@ public class CustomerDao implements Crudable<Customer> {
 
             Customer customer = new Customer();
 
+            System.out.println("CustomerDao::findById() : with id and password got a ResultSet");
             if ( rs.next() ) {
                 // column label must match table column name
                 customer.setCustomer_id(Integer.toString(rs.getInt("customer_id")));
@@ -149,10 +149,12 @@ public class CustomerDao implements Crudable<Customer> {
                 customer.setLogin_id(rs.getString("login_id"));
                 customer.setLogin_password(rs.getString("login_password"));
                 customer.setBlock(rs.getBoolean("block"));
+
             }
             return customer;
 
         } catch (SQLException e) {
+            e.printStackTrace();
             return null;
         }
 
@@ -161,9 +163,9 @@ public class CustomerDao implements Crudable<Customer> {
 
 
     @Override
-    public Customer update(Customer updateCustomer) {
+    public boolean update(Customer updateCustomer) {
 
-        System.out.println("CustomerDao::update() : update a customer by login_id");
+        System.out.println("CustomerDao::update() : update a customer by login_id" + updateCustomer);
 
         try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
 
@@ -171,7 +173,8 @@ public class CustomerDao implements Crudable<Customer> {
             // Because of SQL INJECTION
             // String sql = "insert into customer values ("
 
-            String sql = "update set customer_name = ?, email_1 = ?, phone_1 = ?, address = ?, login_password = ? where login_id = ?";
+            String sql = "update customer set customer_name = ?, email_1 = ?, phone_1 = ?, address = ?, login_password = ? where login_id = ?";
+
 
             PreparedStatement ps = conn.prepareStatement(sql);
 
@@ -181,19 +184,17 @@ public class CustomerDao implements Crudable<Customer> {
             ps.setString(4, updateCustomer.getAddress());
             ps.setString(5, updateCustomer.getLogin_password());
             ps.setString(6, updateCustomer.getLogin_id());
-            //ps.setString(6, updateCustomer.getLogin_password());
 
             int checkUpdate = ps.executeUpdate();
             if (checkUpdate == 0) {
                 throw new RuntimeException();
-            }
+            } else return true;
 
         } catch (SQLException | RuntimeException e) {
             e.printStackTrace();
-            return null;
+            return false;
         }
 
-        return updateCustomer;
     }
 
 
