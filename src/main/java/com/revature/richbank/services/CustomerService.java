@@ -5,6 +5,8 @@ import com.revature.richbank.dos.CustomerDao;
 import com.revature.richbank.models.Customer;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CustomerService {
 
@@ -34,6 +36,22 @@ public class CustomerService {
         }
     }
 
+    public Customer readACustomer(String login_id, String login_password){
+        System.out.println("CustomerService::readACustomer() : reading Customers in file database");
+
+        Customer customer = null;
+
+        try {
+            customer = customerDao.findById(login_id, login_password);
+
+            if ( customer != null ) System.out.println(customer);
+
+        } catch ( NullPointerException e){
+            //e.printStackTrace();
+        }
+        return customer;
+    }
+
 
     public boolean validateLogin_IDNotUsed(String login_id){
         System.out.println("CustomerService::validateLogin_IDNotUsed() : checking Login ID validation.");
@@ -43,7 +61,7 @@ public class CustomerService {
     }
 
     public boolean registerCustomer(Customer newCustomer){
-        System.out.println("CustomerService::registerCustomer() : Customer trying to be registered: " + newCustomer);        System.out.println("Trainer trying to be registered: " + newCustomer);
+        System.out.println("CustomerService::registerCustomer() : Customer trying to be registered: " + newCustomer);
 
         if(!validateCustomerInput(newCustomer)){ // checking if false
             System.out.println("User was not validated");
@@ -60,6 +78,52 @@ public class CustomerService {
         }
         System.out.println("CustomerService::registerCustomer() : Customer has been persisted: " + persistedCustomer);
         return true;
+    }
+
+    public boolean updateCustomer(Customer updateCustomer) {
+        System.out.println("CustomerService::updateCustomer() : Customer trying to update : " + updateCustomer);
+
+        if(!validateCustomerInput(updateCustomer)){ // checking if false
+            System.out.println("User was not validated");
+            throw new RuntimeException();
+        }
+
+        // TODO: Will implement with JDBC (connecting to our database)
+        validateLogin_IDNotUsed(updateCustomer.getLogin_id());
+
+        Customer persistedCustomer = customerDao.update(updateCustomer);
+
+        if(persistedCustomer == null){
+            throw new RuntimeException();
+        }
+        System.out.println("CustomerService::registerCustomer() : Customer has been persisted: " + persistedCustomer);
+        return true;
+    }
+    public boolean isValidEmailAddress(String email) {
+
+        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        // InternetAddreess internetAddreess = new InternetAddressemail(email);
+        // internetAddreess.validate();
+        return email.matches(regex);
+    }
+
+    public boolean isValidPassword(String password) {
+        if ( password.length() >= 8 ) {
+            Pattern letter = Pattern.compile("[a-zA-Z]");
+            Pattern digit = Pattern.compile("[0-9]");
+            Pattern special = Pattern.compile("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
+            // Pattern length = Pattern.compile(".{8}"); // length check
+
+            Matcher hasLetter = letter.matcher(password);
+            Matcher hasDigit = digit.matcher(password);
+            Matcher hasSpecial = special.matcher(password);
+
+            return hasLetter.find() && hasDigit.find() && hasSpecial.find();
+        } else
+            return false;
+
+        // String regex = "^(?=.*\\\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20}$";
+        // return password.matches(regex);
     }
 
     private boolean validateCustomerInput(Customer newCustomer){

@@ -106,13 +106,50 @@ public class CustomerDao implements Crudable<Customer> {
             Customer customer = new Customer();
 
             // column lable must match table column name
+            customer.setCustomer_id(Integer.toString(rs.getInt("customer_id")));
             customer.setCustomer_name(rs.getString("customer_name"));
             customer.setEmail_1(rs.getString("email_1"));
             customer.setPhone_1(rs.getString("phone_1"));
             customer.setAddress(rs.getString("address"));
             customer.setLogin_id(rs.getString("login_id"));
             customer.setLogin_password(rs.getString("login_password"));
+            customer.setBlock(rs.getBoolean("block"));
 
+            return customer;
+
+        } catch (SQLException e) {
+            return null;
+        }
+
+    }
+
+    public Customer findById(String login_id, String login_password) {
+
+        System.out.println("CustomerDao::findById() : find a customer by login_id");
+
+
+        try(Connection conn = ConnectionFactory.getInstance().getConnection();) {
+            String sql = "select * from customer where login_id = ? and login_password = ?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, login_id); // Wrapper class
+            ps.setString(2, login_password); // Wrapper class
+            ResultSet rs = ps.executeQuery(); // remember DQL, select is only keywords for Query
+
+            Customer customer = new Customer();
+
+            if ( rs.next() ) {
+                // column label must match table column name
+                customer.setCustomer_id(Integer.toString(rs.getInt("customer_id")));
+                customer.setCustomer_name(rs.getString("customer_name"));
+                customer.setEmail_1(rs.getString("email_1"));
+                customer.setPhone_1(rs.getString("phone_1"));
+                customer.setAddress(rs.getString("address"));
+                customer.setLogin_id(rs.getString("login_id"));
+                customer.setLogin_password(rs.getString("login_password"));
+                customer.setBlock(rs.getBoolean("block"));
+            }
             return customer;
 
         } catch (SQLException e) {
@@ -124,10 +161,9 @@ public class CustomerDao implements Crudable<Customer> {
 
 
     @Override
-    public boolean update(Customer updateCustomer) {
+    public Customer update(Customer updateCustomer) {
 
-        System.out.println("CustomerDao::update() : find a customer by login_id");
-        System.out.println("CustomerDao::create() : creating new customer");
+        System.out.println("CustomerDao::update() : update a customer by login_id");
 
         try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
 
@@ -135,15 +171,16 @@ public class CustomerDao implements Crudable<Customer> {
             // Because of SQL INJECTION
             // String sql = "insert into customer values ("
 
-            String sql = "update set customer_name = ?, email_1 = ?, phone_1 = ?, address = ? where login_id = ?";
-            // UPDATE mytable SET a = 5, b = 3, c = 1 WHERE a > 0;
+            String sql = "update set customer_name = ?, email_1 = ?, phone_1 = ?, address = ?, login_password = ? where login_id = ?";
+
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setString(1, updateCustomer.getCustomer_name());
             ps.setString(2, updateCustomer.getEmail_1());
             ps.setString(3, updateCustomer.getPhone_1());
             ps.setString(4, updateCustomer.getAddress());
-            ps.setString(5, updateCustomer.getLogin_id());
+            ps.setString(5, updateCustomer.getLogin_password());
+            ps.setString(6, updateCustomer.getLogin_id());
             //ps.setString(6, updateCustomer.getLogin_password());
 
             int checkUpdate = ps.executeUpdate();
@@ -153,10 +190,10 @@ public class CustomerDao implements Crudable<Customer> {
 
         } catch (SQLException | RuntimeException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
 
-        return true;
+        return updateCustomer;
     }
 
 
@@ -176,7 +213,7 @@ public class CustomerDao implements Crudable<Customer> {
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection();) {
 
-            String sql = "select login_id as count from customer where login_id = ?";
+            String sql = "select login_id from customer where login_id = ?";
 
             PreparedStatement ps = conn.prepareStatement(sql);
 

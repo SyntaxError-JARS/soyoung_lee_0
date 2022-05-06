@@ -1,7 +1,6 @@
 package com.revature.richbank.util;
 
-import com.revature.richbank.menus.RegisterMenu;
-import com.revature.richbank.menus.WelcomeMenu;
+import com.revature.richbank.menus.*;
 
 
 import com.revature.richbank.services.CustomerService;
@@ -18,6 +17,8 @@ public class AppState {
 
     private RegisterMenu registerMenu;
 
+    private LoginMenu loginMenu;
+
     // default constructor.
     public AppState() {
         System.out.println("AppState::AppState() constructor.");
@@ -28,7 +29,7 @@ public class AppState {
 
         // TODO: Why are we doing all of this?
         this.welcomeMenu = new WelcomeMenu(terminalReader, customerService);
-        this.registerMenu = new RegisterMenu(terminalReader);
+        //this.registerMenu = new RegisterMenu(terminalReader);
 
     }
 
@@ -37,9 +38,9 @@ public class AppState {
         try {
             while (isRunning) {
                 System.out.println("AppState::startup() : Application successfully started!");
-                registerMenu.render();
+                //registerMenu.render();
                 // comment in and out based on what you want to use
-                // welcomeMenu.render();
+                welcomeMenu.render();
             }
         } catch (Exception e) {
             e.printStackTrace();

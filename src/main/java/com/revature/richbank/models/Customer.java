@@ -4,13 +4,14 @@ public class Customer {
 
 
     // Encapsulatioed these variables and attributes. It's
+    private String customer_id   ;
     private String customer_name ;
     private String email_1       ;
     private String phone_1       ;
     private String address       ;
     private String login_id      ;
     private String login_password;
-    private String login_date    ;
+    //private String login_date    ;
     private boolean block    ;
 
     /*
@@ -20,15 +21,16 @@ public class Customer {
      *          parameter change
      */
 
-    public Customer(String customer_name, String email_1, String phone_1, String address, String login_id, String login_password, String login_date, boolean block) {
-        super();
+    //public Customer(String customer_name, String email_1, String phone_1, String address, String login_id, String login_password, String login_date, boolean block) {
+    public Customer(String customer_name, String email_1, String phone_1, String address, String login_id, String login_password, boolean block) {
+            super();
         this.customer_name = customer_name;
         this.email_1 = email_1;
         this.phone_1 = phone_1;
         this.address = address;
         this.login_id = login_id;
         this.login_password = login_password;
-        this.login_date = login_date;
+        //this.login_date = login_date;
         this.block = block;
     }
 
@@ -39,6 +41,14 @@ public class Customer {
     public Customer(String login_id, String login_password) {
         this.login_id = login_id;
         this.login_password = login_password;
+    }
+
+    public String getCustomer_id() {
+        return customer_id;
+    }
+
+    public void setCustomer_id(String customer_id) {
+        this.customer_id = customer_id;
     }
 
     public String getCustomer_name() {
@@ -88,7 +98,7 @@ public class Customer {
     public void setLogin_password(String login_password) {
         this.login_password = login_password;
     }
-
+/*
     public String getLogin_date() {
         return login_date;
     }
@@ -96,7 +106,7 @@ public class Customer {
     public void setLogin_date(String login_date) {
         this.login_date = login_date;
     }
-
+*/
     public boolean isBlock() {
         return block;
     }
@@ -114,7 +124,7 @@ public class Customer {
                 ", address='" + address + '\'' +
                 ", login_id='" + login_id + '\'' +
                 ", login_password='" + login_password + '\'' +
-                ", login_date='" + login_date + '\'' +
+                // ", login_date='" + login_date + '\'' +
                 ", block=" + block +
                 '}';
     }
