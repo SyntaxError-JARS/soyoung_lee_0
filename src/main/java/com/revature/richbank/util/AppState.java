@@ -27,7 +27,7 @@ public class AppState {
 
         // TODO : check if you give true what's happening here!
         // logger = Logger.getLogger(true); // print to terminal Console too.
-        logger = Logger.getLogger(true);
+        logger = Logger.getLogger(false);
         logger.log("AppState::startup() : Application successfully started!");
 
         isRunning = true;

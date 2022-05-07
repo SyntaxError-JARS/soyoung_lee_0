@@ -3,6 +3,7 @@ package com.revature.richbank.services;
 
 import com.revature.richbank.dos.CustomerDao;
 import com.revature.richbank.exceptions.InvalidRequestException;
+import com.revature.richbank.exceptions.ResourcePersistenceException;
 import com.revature.richbank.models.Customer;
 
 import java.io.IOException;
@@ -67,7 +68,7 @@ public class CustomerService {
 
         if(!validateCustomerInput(newCustomer)){ // checking if false
             //System.out.println("User was not validated");
-            throw new InvalidRequestException("User was not validated");
+            throw new InvalidRequestException("User input was not validated, empty string or null values");
         }
 
         // TODO: Will implement with JDBC (connecting to our database)
@@ -76,7 +77,8 @@ public class CustomerService {
         Customer persistedCustomer = customerDao.create(newCustomer);
 
         if(persistedCustomer == null){
-            throw new RuntimeException();
+            //throw new RuntimeException();
+            throw new ResourcePersistenceException("Customer was not persisted to the database upon registration.");
         }
         System.out.println("CustomerService::registerCustomer() : Customer has been persisted: " + persistedCustomer);
         return true;

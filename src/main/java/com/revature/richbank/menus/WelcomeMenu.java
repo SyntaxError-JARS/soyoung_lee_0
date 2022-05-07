@@ -11,7 +11,7 @@ public class WelcomeMenu extends Menu {
 
     private CustomerService customerService;
 
-    private final Logger logger ;
+    private final Logger logger;
 
 
     public WelcomeMenu(BufferedReader terminalReader, CustomerService customerService, Logger logger) {
@@ -24,7 +24,8 @@ public class WelcomeMenu extends Menu {
 
     @Override
     public void render() throws Exception {
-        System.out.println("WelcomeMenu::render() : rendering Menu");
+
+        logger.info("WelcomeMenu::render() : rendering Menu");
 
         String welcome = "Welcome to the Rich Bank!";
         String option1 = "1) Login";
@@ -50,35 +51,36 @@ public class WelcomeMenu extends Menu {
         // on the user selection
         switch (userSelection) {
             case "1":
-                System.out.println("User has selected login...");
+                logger.info("User has selected login...");
                 LoginMenu loginMenu = new LoginMenu(terminalReader);
                 loginMenu.render();
                 break;
             case "2":
-                System.out.println("User has selected register...");
+                logger.info("User has selected register...");
                 RegisterMenu registerMenu = new RegisterMenu(terminalReader);
                 registerMenu.render();
                 break;
             case "3":
-                System.out.println("User has selected update information...");
+                logger.info("User has selected update information...");
                 UpdateMenu updateMenu = new UpdateMenu(terminalReader);
                 updateMenu.render();
                 break;
             case "4":
-                System.out.println("User has selected create account...");
+                logger.info("User has selected create account...");
                 System.out.println("===    m@.@m    === Under Construction ===          m@.@m        ===");
                 // CreateMenu createMenu = new CreateMenu(terminalReader);
                 // createMenu.render();
                 break;
             case "5":
-                System.out.println("User has selected view all transactions for user's account...");
+                logger.info("User has selected view all transactions for user's account...");
                 System.out.println("===    m@.@m    === Under Construction ===          m@.@m        ===");
                 break;
             case "6":
-                System.out.println("User has selected exit...");
+                logger.info("User has selected exit...");
                 // shutdown application
                 // exit 0
                 shutdown();
+                logger.info("Application Shutting Down");
                 break;
             default: // why have a default? catch all if input doesn't match any case above.
                 System.out.println("No valid user input provide");

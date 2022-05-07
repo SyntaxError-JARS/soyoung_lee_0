@@ -44,11 +44,6 @@ public class CreateAccountMenu extends Menu {
             Account newAccount = new Account();
             if(account_input.equals("1")) newAccount.setAccount_type("deposit");
             else newAccount.setAccount_type("checking");
-            newAccount
-
-
-                AccountService.create()
-
 
 
             System.out.println("Enter the amount of money you want deposit today: ");
@@ -70,7 +65,7 @@ public class CreateAccountMenu extends Menu {
         } else  {
             System.out.println("You failed to login with your ID and password! ");
             System.out.println("Please! Check your ID and password!\n\n");
-            System.out.println("If you didn't register yet...please register first!!!")
+            System.out.println("If you didn't register yet...please register first!!!");
         }
 
 

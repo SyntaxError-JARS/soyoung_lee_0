@@ -4,6 +4,7 @@ import com.revature.richbank.exceptions.InvalidRequestException;
 import com.revature.richbank.exceptions.ResourcePersistenceException;
 import com.revature.richbank.models.Customer;
 import com.revature.richbank.services.CustomerService;
+import com.revature.richbank.util.logging.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,13 +17,15 @@ public class RegisterMenu extends Menu {
 
     private CustomerService customerService = new CustomerService();
 
+    private final Logger logger = Logger.getLogger(true);
+
     public RegisterMenu (BufferedReader terminalReader) {
         super("Register Menu", "/register", terminalReader);
     }
 
     @Override
     public void render() throws Exception {
-        System.out.println("RegisterMenu::render() : rendering Menu");
+        logger.info("RegisterMenu::render() : rendering Menu");
 
         System.out.println("What is your name?");
         String customer_name = terminalReader.readLine();
@@ -60,11 +63,11 @@ public class RegisterMenu extends Menu {
         // Trainer trainer = new Trainer(); // why is this red?? there isn't a No-Arg constructor
         // What's happening here? Intialization a new Trainer object in memory
         Customer newCustomer = new Customer(customer_name, email_1, phone_1, address, login_id, login_password, false);
-        System.out.println("Here is the customer that was provided by the user: " + newCustomer);
+        logger.info("Here is the customer that was provided by the user: " + newCustomer);
         try {
             customerService.registerCustomer(newCustomer);
         } catch (InvalidRequestException | ResourcePersistenceException e) {
-            e.getMessage();
+            logger.warn(e.getMessage());
             e.getStackTrace();
         }
     }
