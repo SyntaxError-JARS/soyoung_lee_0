@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8d0ec865-0296-4581-b33a-8076bee27ae8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/services/AccountService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/services/TransService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/richbank/menus/CreateAccountMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/menus/CreateAccountMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/richbank/menus/RegisterMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/menus/RegisterMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/richbank/menus/LoginMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/menus/LoginMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/richbank/menus/UpdateMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/menus/UpdateMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/richbank/menus/WelcomeMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/menus/WelcomeMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/richbank/services/CustomerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/services/CustomerService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/richbank/util/AppState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/util/AppState.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

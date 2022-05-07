@@ -2,12 +2,15 @@ package com.revature.richbank.menus;
 
 import com.revature.richbank.models.Customer;
 import com.revature.richbank.services.CustomerService;
+import com.revature.richbank.util.logging.Logger;
 
 import java.io.BufferedReader;
 
 public class LoginMenu extends Menu {
 
     private CustomerService customerService = new CustomerService();
+
+    private final Logger logger = Logger.getLogger(true);
 
     public LoginMenu (BufferedReader terminalReader) {
         super("Login Menu", "/login", terminalReader);

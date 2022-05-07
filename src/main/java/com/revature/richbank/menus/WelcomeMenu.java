@@ -11,13 +11,14 @@ public class WelcomeMenu extends Menu {
 
     private CustomerService customerService;
 
-    private final Logger logger;
+    private final Logger logger = Logger.getLogger(true);
 
 
-    public WelcomeMenu(BufferedReader terminalReader, CustomerService customerService, Logger logger) {
+    // public WelcomeMenu(BufferedReader terminalReader, CustomerService customerService, Logger logger) {
+    public WelcomeMenu(BufferedReader terminalReader, CustomerService customerService) {
         super("Welcome", "/welcome", terminalReader);
         this.customerService = customerService;
-        this.logger = logger;
+        // this.logger = logger;
     }
 
 

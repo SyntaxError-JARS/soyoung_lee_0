@@ -2,6 +2,7 @@ package com.revature.richbank.menus;
 
 import com.revature.richbank.models.Customer;
 import com.revature.richbank.services.CustomerService;
+import com.revature.richbank.util.logging.Logger;
 
 import java.io.BufferedReader;
 
@@ -9,13 +10,15 @@ public class UpdateMenu extends Menu {
 
     private CustomerService customerService = new CustomerService();
 
+    private final Logger logger = Logger.getLogger(true);
+
     public UpdateMenu (BufferedReader terminalReader) {
         super("Update Menu", "/update", terminalReader);
     }
 
     @Override
     public void render() throws Exception {
-        System.out.println("UpdateMenu::render() : rendering Menu");
+        logger.info("UpdateMenu::render() : rendering Menu");
 
         System.out.println("What is your login id?");
         String login_id = terminalReader.readLine();
@@ -32,10 +35,10 @@ public class UpdateMenu extends Menu {
 
             showCustomerInfo(customer);
 
-            System.out.println("Please your new password?");
+            System.out.println("Please enter your new password?");
             login_password = terminalReader.readLine();
 
-            System.out.println("Re-enter password");
+            System.out.println("Re-enter your new password");
             String passwordCheck = terminalReader.readLine();
 
             if (!login_password.equals(passwordCheck)) { // password != passwordCheck
@@ -47,13 +50,13 @@ public class UpdateMenu extends Menu {
 
 
             if( customerService.updateCustomer(customer) )
-                System.out.println("Happy!!!! Your information is successfully updated!");
+                logger.info("Happy!!!! Your information is successfully updated!");
             else
-                System.out.println("Sorry!!!! Your information is not updated!");
+                logger.warn("Sorry!!!! Your information is not updated!");
 
         } else  {
-            System.out.println("You failed to login with your ID and password! ");
-            System.out.println("Please! Check your ID and paassword!");
+            logger.warn("You failed to login with your ID and password! ");
+            logger.warn("Please! Check your ID and paassword!");
         }
 
 
