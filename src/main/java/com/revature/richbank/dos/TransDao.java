@@ -1,5 +1,6 @@
 package com.revature.richbank.dos;
 
+import com.revature.richbank.models.Account;
 import com.revature.richbank.models.Customer;
 import com.revature.richbank.models.Trans;
 import com.revature.richbank.models.Trans;
@@ -48,41 +49,7 @@ public class TransDao implements Crudable<Trans> {
 
     @Override
     public Trans[] findAll() throws IOException {
-        logger.info("TransDao::findAll() : finding all trans");
-
-        // FileWriter's evil counterpart, to read files
-
-        Trans[] transs = new Trans[10];
-        int index = 0;
-        //connection is auto closable
-        try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
-
-            String sql = "select * from trans";
-            Statement s = conn.createStatement();
-
-            ResultSet rs = s.executeQuery(sql);
-
-            while (rs.next()) { // the last line of the file is null
-                Trans trans = new Trans();
-
-                // column lable must match table column name
-                trans.setTrans_id(rs.getInt("trans_id"));
-                trans.setAccount_number(rs.getString("account_number"));
-                trans.setTrans_date(rs.getString("trans_date"));
-                trans.setTrans_date(rs.getString("trans_type"));
-                trans.setAmount(rs.getDouble("amount"));
-
-                logger.info("Going to the next line for our following index.");
-                transs[index] = trans;
-                index++; // increment the index by 1, must occur after the trainer[index] re-assignment
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-        logger.info("Returning trans information to user.");
-        return transs;
+        return null;
     }
 
 
@@ -129,12 +96,61 @@ public class TransDao implements Crudable<Trans> {
 
     @Override
     public Trans findById(String id) {
-        return null;
+
+        logger.info("TransDao::findById() : find a transaction by trans_id ");
+
+
+        try(Connection conn = ConnectionFactory.getInstance().getConnection();) {
+            String sql = "select * from trans_info where trans_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, id); // Wrapper class
+            ResultSet rs = ps.executeQuery(); // remember DQL, select is only keywords for Query
+
+            Trans trans = new Trans();
+
+            trans.setAccount_id(    rs.getInt(   "account_id"  ));
+            trans.setAccount_number(rs.getString("account_number"       ));
+            trans.setLast_date(     rs.getString("account_type"      ));
+            trans.setAccount_type(  rs.getString("first_date"       ));
+            trans.setFirst_date(    rs.getString("last_date"       ));
+            trans.setInterest(      rs.getDouble("interest"));
+            trans.setTotal(         rs.getDouble("total"));
+            trans.setCustomer_id_1( rs.getInt("customer_id_1"));
+            trans.setCustomer_id_2( rs.getInt("customer_id_2"));
+
+
+            return account;
+
+        } catch (SQLException e) {
+            return null;
+        }
     }
 
     @Override
     public boolean update(Trans updateTrans) {
-        return false;
+        logger.info("AccountDao::update() : update an trans" + updateTrans);
+
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
+
+            String sql = "update trans set trans_date = ?, trans_type = ?, amount = ? where trans_id = ?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, updateTrans.getTrans_date());
+            ps.setString(2, updateTrans.getTrans_type());
+            ps.setDouble(3, updateTrans.getAmount());
+            ps.setInt(4, updateTrans.getTrans_id());
+
+            int checkUpdate = ps.executeUpdate();
+            if (checkUpdate == 0) {
+                throw new RuntimeException();
+            } else return true;
+
+        } catch (SQLException | RuntimeException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override

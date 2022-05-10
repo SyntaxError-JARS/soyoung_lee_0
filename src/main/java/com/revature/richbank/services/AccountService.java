@@ -2,9 +2,12 @@ package com.revature.richbank.services;
 
 
 import com.revature.richbank.dos.AccountDao;
+
 import com.revature.richbank.exceptions.InvalidRequestException;
 import com.revature.richbank.models.Account;
 
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,16 +34,9 @@ public class AccountService {
             for (Account account : accounts)   // account indicates a single element in the array accounts
                 if ( account != null ) System.out.println(account);
 
-        } catch ( NullPointerException e){
+        } catch (NullPointerException | IOException e){
             //e.printStackTrace();
         }
-    }
-
-    public boolean validateLogin_IDNotUsed(String login_id){
-        System.out.println("AccountService::validateLogin_IDNotUsed() : checking Login ID validation.");
-
-        customerDao.checkLogin_ID(login_id);
-        return false;
     }
 
     public boolean registerAccount(Account newAccount){
@@ -52,8 +48,6 @@ public class AccountService {
         }
 
         // TODO: Will implement with JDBC (connecting to our database)
-        validateLogin_IDNotUsed(newAccount.getLogin_id());
-
         Account persistedAccount = accountDao.create(newAccount);
 
         if(persistedAccount == null){
@@ -72,8 +66,6 @@ public class AccountService {
         }
 
         // TODO: Will implement with JDBC (connecting to our database)
-        validateLogin_IDNotUsed(updateAccount.getLogin_id());
-
         if( !accountDao.update(updateAccount) ){
             throw new RuntimeException();
         }
@@ -113,12 +105,13 @@ public class AccountService {
         System.out.println("AccountService::validateAccountInput() : Validating Account: " + newAccount);
 
         if(newAccount == null) return false;
-        if(newAccount.getAccount_name() == null || newAccount.getAccount_name().trim().equals("")) return false;
-        if(newAccount.getEmail_1() == null || newAccount.getEmail_1().trim().equals("")) return false;
-        if(newAccount.getPhone_1() == null || newAccount.getPhone_1().trim().equals("")) return false;
-        if(newAccount.getAddress() == null || newAccount.getAddress().trim().equals("")) return false;
-        if(newAccount.getLogin_id() == null || newAccount.getLogin_id().trim().equals("")) return false;
-        return newAccount.getLogin_password() != null || !newAccount.getLogin_password().trim().equals("");
+        if(newAccount.getAccount_number() == null || newAccount.getAccount_number().trim().equals("")) return false;
+        if(newAccount.getAccount_type() == null || newAccount.getAccount_type().trim().equals("")) return false;
+        if(newAccount.getFirst_date() == null || newAccount.getFirst_date().trim().equals("")) newAccount.setFirst_date(LocalDate.now().toString());
+        if( newAccount.getAccount_type().trim().equals("closed") && (newAccount.getLast_date() == null || newAccount.getLast_date().trim().equals("")) )
+            newAccount.setLast_date(LocalDate.now().toString());
+        if(newAccount.getCustomer_id_1() == 0) return false;
+        return newAccount.getAccount_number() != null || !newAccount.getAccount_type().trim().equals("");
     }
 
 }

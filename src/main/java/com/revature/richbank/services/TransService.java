@@ -5,6 +5,7 @@ import com.revature.richbank.dos.TransDao;
 import com.revature.richbank.exceptions.InvalidRequestException;
 import com.revature.richbank.models.Trans;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,18 +13,13 @@ public class TransService {
 
     private TransDao transDao = new TransDao();
 
-    public void readTranss (){
+    public void readTrans (String account_number){
         System.out.println("TransService::readTranss() : reading Transs in file database");
 
         Trans[] transs = new Trans[0]; // ignore for now
         try {
-            transs = transDao.findAll();
+            transs = transDao.findAll(account_number);
 
-            for (int i = 0; i < transs.length; i++) {
-                Trans trans = transs[i];
-                if ( trans != null )
-                        System.out.println(trans);
-            }
 
             // For Each loop
             // for (Object trans : transs )
@@ -31,21 +27,20 @@ public class TransService {
             for (Trans trans : transs)   // trans indicates a single element in the array transs
                 if ( trans != null ) System.out.println(trans);
 
-        } catch ( NullPointerException e){
+        } catch (NullPointerException | IOException e){
             //e.printStackTrace();
         }
     }
 
-    public Trans readATrans(String login_id, String login_password){
-        System.out.println("TransService::readATrans() : reading a Transs with id and password in file database");
+    public Trans readATrans(String trans_id){
+        logger.info("TransService::readATrans() : reading a Trans with trans_id");
 
         Trans trans = null;
 
         try {
-            trans = transDao.findById(login_id, login_password);
-            //trans = transDao.findById(login_id);
+            trans = transDao.findById(trans_id);
 
-            if ( trans != null ) System.out.println("TransService::readATrans() : " + trans);
+            if ( trans != null ) logger.info("TransService::readATrans() : " + trans);
 
         } catch ( NullPointerException e){
             //e.printStackTrace();

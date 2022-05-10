@@ -185,7 +185,7 @@ public class AccountDao implements Crudable<Account> {
             ps.setString(2, updateAccount.getLast_date());
             ps.setDouble(3, updateAccount.getInterest());
             ps.setDouble(4, updateAccount.getTotal());
-            ps.setString(2, updateAccount.getAccount_number());
+            ps.setString(5, updateAccount.getAccount_number());
 
             int checkUpdate = ps.executeUpdate();
             if (checkUpdate == 0) {
