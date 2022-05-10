@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import java.util.Properties;
 
-/*
+/* TODO : Understand Design Pattern
 -----------------------------------------
 Design Pattern
 -----------------------------------------
@@ -26,7 +26,7 @@ Design Pattern
     Factory Design Pattern
 
     - Creational Pattern
-    - used to abstract away the creating/instantiation of this class
+    - used to abstract way the creating/instantiation of this class
 -----------------------------------------
 
 
@@ -51,7 +51,7 @@ public class ConnectionFactory {
     private Properties prop = new Properties();
 
 
-    //This is specially a singleton bc of the private constructor
+    //TODO: This is specially a Singleton design pattern because of the private default constructor
     private ConnectionFactory() {
         try {
             prop.load(new FileReader("src/main/resources/db.properties"));
@@ -67,9 +67,9 @@ public class ConnectionFactory {
         //       save under resources directory and add it to the
         //       Project Structure.
         //      File > Project Structure > Module
-        // TODO: Study what is reflection
 
-        // Reflections!!! are just viewing a class
+
+        // TODO: Reflections!!! are just viewing a class
         // ---> check there's Driver we are looking for in library.
         try {
             Class.forName("org.postgresql.Driver");
@@ -104,7 +104,7 @@ public class ConnectionFactory {
             // conn = DriverManager.getConnection(url, user, password);
             conn = DriverManager.getConnection(prop.getProperty("url"),
                    prop.getProperty("user"),
-                   "password");
+                   prop.getProperty("password"));
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -5,14 +5,18 @@ public class Trans {
     private String account_number;
     private String trans_date;
     private String trans_type;
-    private int amount;
+    private double amount;
 
-    public Trans(int trans_id, String account_number, String trans_date, String trans_type, int amount) {
+    public Trans(int trans_id, String account_number, String trans_date, String trans_type, double amount) {
         this.trans_id = trans_id;
         this.account_number = account_number;
         this.trans_date = trans_date;
         this.trans_type = trans_type;
         this.amount = amount;
+    }
+
+    public Trans() {
+        super();
     }
 
     public int getTrans_id() {
@@ -47,11 +51,11 @@ public class Trans {
         this.trans_type = trans_type;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

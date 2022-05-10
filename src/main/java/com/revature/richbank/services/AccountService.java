@@ -36,28 +36,10 @@ public class AccountService {
         }
     }
 
-    public Account readAAccount(String login_id, String login_password){
-        System.out.println("AccountService::readAAccount() : reading a Accounts with id and password in file database");
-
-        Account account = null;
-
-        try {
-            account = accountDao.findById(login_id, login_password);
-            //account = accountDao.findById(login_id);
-
-            if ( account != null ) System.out.println("AccountService::readAAccount() : " + account);
-
-        } catch ( NullPointerException e){
-            //e.printStackTrace();
-        }
-        return account;
-    }
-
-
     public boolean validateLogin_IDNotUsed(String login_id){
         System.out.println("AccountService::validateLogin_IDNotUsed() : checking Login ID validation.");
 
-        accountDao.checkLogin_ID(login_id);
+        customerDao.checkLogin_ID(login_id);
         return false;
     }
 

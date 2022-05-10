@@ -8,14 +8,14 @@ public class Account {
     private String last_date;
     private double interest;
     private double total;
-    private String customer_id_1;
-    private String customer_id_2;
+    private int customer_id_1;
+    private int customer_id_2;
 
     public Account(){
         super();
     }
 
-    public Account(int account_id, String account_number, String account_type, String first_date, String last_date, double interest, double total, String customer_id_1, String customer_id_2) {
+    public Account(int account_id, String account_number, String account_type, String first_date, String last_date, double interest, double total, int customer_id_1, int customer_id_2) {
         super();
         this.account_id = account_id;
         this.account_number = account_number;
@@ -84,19 +84,19 @@ public class Account {
         this.total = total;
     }
 
-    public String getCustomer_id_1() {
+    public int getCustomer_id_1() {
         return customer_id_1;
     }
 
-    public void setCustomer_id_1(String customer_id_1) {
+    public void setCustomer_id_1(int customer_id_1) {
         this.customer_id_1 = customer_id_1;
     }
 
-    public String getCustomer_id_2() {
+    public int getCustomer_id_2() {
         return customer_id_2;
     }
 
-    public void setCustomer_id_2(String customer_id_2) {
+    public void setCustomer_id_2(int customer_id_2) {
         this.customer_id_2 = customer_id_2;
     }
 

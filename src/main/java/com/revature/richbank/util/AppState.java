@@ -17,8 +17,6 @@ public class AppState {
 
     private WelcomeMenu welcomeMenu;
 
-    private RegisterMenu registerMenu;
-
     private final Logger logger;
 
     // default constructor.

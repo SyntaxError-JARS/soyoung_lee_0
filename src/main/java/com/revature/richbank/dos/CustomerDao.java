@@ -2,15 +2,18 @@ package com.revature.richbank.dos;
 
 import com.revature.richbank.models.Customer;
 import com.revature.richbank.util.ConnectionFactory;
+import com.revature.richbank.util.logging.Logger;
 
 import java.sql.*;
 
 public class CustomerDao implements Crudable<Customer> {
 
+    private final Logger logger = Logger.getLogger(true);
+
 
     @Override
     public Customer create(Customer newCustomer) {
-        System.out.println("CustomerDao::create() : creating new customer");
+        logger.info("CustomerDao::create() : creating new customer");
 
         try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
 
@@ -45,7 +48,7 @@ public class CustomerDao implements Crudable<Customer> {
     @Override
     //public Customer[] findAll() throws IOExcetpion {
     public Customer[] findAll() {
-        System.out.println("CustomerDao::findAll() : finding all customers");
+        logger.info("CustomerDao::findAll() : finding all customers");
 
         // FileWriter's evil counterpart, to read files
 
@@ -73,7 +76,7 @@ public class CustomerDao implements Crudable<Customer> {
                 customer.setLogin_id(rs.getString("login_id"));
                 customer.setLogin_password(rs.getString("login_password"));
 
-                System.out.println("Going to the next line for our following index.");
+                logger.info("Going to the next line for our following index.");
                 customers[index] = customer;
                 index++; // increment the index by 1, must occur after the trainer[index] re-assignment
             }
@@ -82,7 +85,7 @@ public class CustomerDao implements Crudable<Customer> {
             e.printStackTrace();
             return null;
         }
-        System.out.println("Returning customers information to user.");
+        logger.info("Returning customers information to user.");
         return customers;
     }
 
@@ -91,7 +94,7 @@ public class CustomerDao implements Crudable<Customer> {
     @Override
     public Customer findById(String login_id) {
 
-        System.out.println("CustomerDao::findById() : find a customer by login_id");
+        logger.info("CustomerDao::findById() : find a customer by login_id");
 
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection();) {
@@ -124,7 +127,7 @@ public class CustomerDao implements Crudable<Customer> {
 
     public Customer findById(String login_id, String login_password) {
 
-        System.out.println("CustomerDao::findById() : find a customer by login_id and password");
+        logger.info("CustomerDao::findById() : find a customer by login_id and password");
 
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection();) {
@@ -165,7 +168,7 @@ public class CustomerDao implements Crudable<Customer> {
     @Override
     public boolean update(Customer updateCustomer) {
 
-        System.out.println("CustomerDao::update() : update a customer by login_id" + updateCustomer);
+        logger.info("CustomerDao::update() : update a customer by login_id" + updateCustomer);
 
         try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
 
@@ -203,14 +206,14 @@ public class CustomerDao implements Crudable<Customer> {
     @Override
     public boolean delete (String login_id) {
 
-        System.out.println("CustomerDao::delete() : delete a customer by login_id");
+        logger.info("CustomerDao::delete() : delete a customer by login_id");
 
         return false;
     }
 
     public void checkLogin_ID (String login_id) {
 
-        System.out.println("CustomerDao::checkLogin_ID() : find a customer by login_id");
+        logger.info("CustomerDao::checkLogin_ID() : find a customer by login_id");
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection();) {
 
