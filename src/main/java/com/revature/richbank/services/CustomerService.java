@@ -2,58 +2,26 @@ package com.revature.richbank.services;
 
 
 import com.revature.richbank.dos.CustomerDao;
+import com.revature.richbank.exceptions.AuthenticationException;
 import com.revature.richbank.exceptions.InvalidRequestException;
 import com.revature.richbank.exceptions.ResourcePersistenceException;
+import com.revature.richbank.models.Account;
 import com.revature.richbank.models.Customer;
+import com.revature.richbank.util.logging.Logger;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CustomerService {
+public class CustomerService  implements Serviceable <Customer> {
 
-    private CustomerDao customerDao = new CustomerDao();
+    private CustomerDao customerDao;
+    private final Logger logger = Logger.getLogger();
 
-    public void readCustomers (){
-        System.out.println("CustomerService::readCustomers() : reading Customers in file database");
-
-        Customer[] customers = new Customer[0]; // ignore for now
-        try {
-            customers = customerDao.findAll();
-
-            for (int i = 0; i < customers.length; i++) {
-                Customer customer = customers[i];
-                if ( customer != null )
-                        System.out.println(customer);
-            }
-
-            // For Each loop
-            // for (Object customer : customers )
-            //      if ( customer != null ) System.out.println((Customer)customer);
-            for (Customer customer : customers)   // customer indicates a single element in the array customers
-                if ( customer != null ) System.out.println(customer);
-
-        } catch ( NullPointerException e){
-            //e.printStackTrace();
-        }
-    }
-
-    public Customer readACustomer(String login_id, String login_password){
-        System.out.println("CustomerService::readACustomer() : reading a Customers with id and password in file database");
-
-        Customer customer = null;
-
-        try {
-            customer = customerDao.findById(login_id, login_password);
-            //customer = customerDao.findById(login_id);
-
-            if ( customer != null ) System.out.println("CustomerService::readACustomer() : " + customer);
-
-        } catch ( NullPointerException e){
-            //e.printStackTrace();
-        }
-        return customer;
-    }
+    public CustomerService (CustomerDao customerDao) {   this.customerDao = customerDao; }
 
 
     public boolean validateLogin_IDNotUsed(String login_id){
@@ -61,45 +29,6 @@ public class CustomerService {
 
         customerDao.checkLogin_ID(login_id);
         return false;
-    }
-
-    public boolean registerCustomer(Customer newCustomer){
-        System.out.println("CustomerService::registerCustomer() : Customer trying to be registered: " + newCustomer);
-
-        if(!validateCustomerInput(newCustomer)){ // checking if false
-            //System.out.println("User was not validated");
-            throw new InvalidRequestException("User input was not validated, empty string or null values");
-        }
-
-        // TODO: Will implement with JDBC (connecting to our database)
-        validateLogin_IDNotUsed(newCustomer.getLogin_id());
-
-        Customer persistedCustomer = customerDao.create(newCustomer);
-
-        if(persistedCustomer == null){
-            //throw new RuntimeException();
-            throw new ResourcePersistenceException("Customer was not persisted to the database upon registration.");
-        }
-        System.out.println("CustomerService::registerCustomer() : Customer has been persisted: " + persistedCustomer);
-        return true;
-    }
-
-    public boolean updateCustomer(Customer updateCustomer) {
-        System.out.println("CustomerService::updateCustomer() : Customer trying to update : " + updateCustomer);
-
-        if(!validateCustomerInput(updateCustomer)){ // checking if false
-            System.out.println("User was not validated");
-            throw new RuntimeException();
-        }
-
-        // TODO: Will implement with JDBC (connecting to our database)
-        validateLogin_IDNotUsed(updateCustomer.getLogin_id());
-
-        if( !customerDao.update(updateCustomer) ){
-            throw new RuntimeException();
-        }
-        System.out.println("CustomerService::updateCustomer() : Customer has been updated: " + updateCustomer);
-        return true;
     }
 
     public boolean isValidEmailAddress(String email) {
@@ -142,4 +71,126 @@ public class CustomerService {
         return newCustomer.getLogin_password() != null || !newCustomer.getLogin_password().trim().equals("");
     }
 
+    public Customer authenticateCustomer(String login_id, String login_password) {
+
+        if (login_id == null || login_id.equals("") || login_password == null || login_password.equals("")) {
+            throw new InvalidRequestException("Either id or password is an invalidate entry. Please logging in again!");
+        }
+
+        Customer authenticateCustomer = customerDao.authenticateCustomer(login_id, login_password);
+
+        if (authenticateCustomer == null) {
+            throw new AuthenticationException("Unauthenticated user, information provided was not consistent with our database.");
+        }
+
+        return authenticateCustomer;
+    }
+
+    @Override
+    public Customer create(Customer newObject) {
+        System.out.println("CustomerService::create() : Customer trying to be registered: " + newObject);
+
+        if(!validateCustomerInput(newObject)){ // checking if false
+            //System.out.println("User was not validated");
+            throw new InvalidRequestException("User input was not validated, empty string or null values");
+        }
+
+        // TODO: Will implement with JDBC (connecting to our database)
+        validateLogin_IDNotUsed(newObject.getLogin_id());
+
+        Customer persistedCustomer = customerDao.create(newObject);
+
+        if(persistedCustomer == null){
+            //throw new RuntimeException();
+            throw new ResourcePersistenceException("Customer was not persisted to the database upon registration.");
+        }
+        System.out.println("CustomerService::registerCustomer() : Customer has been persisted: " + persistedCustomer);
+        return newObject;
+    }
+
+    @Override
+    public List<Customer> readAll() {
+        System.out.println("CustomerService::readCustomers() : reading Customers in file database");
+
+        List<Customer> customerList = new LinkedList<>(); // ignore for now
+        try {
+            customerList = customerDao.findAll();
+
+
+            // For Each loop
+            // for (Object customer : customers )
+            //      if ( customer != null ) System.out.println((Customer)customer);
+            for (Customer customer : customerList)   // customer indicates a single element in the array customers
+                if ( customer != null ) System.out.println(customer);
+
+        } catch ( NullPointerException e){
+            //e.printStackTrace();
+        }
+        return customerList;
+    }
+
+    @Override
+    public Customer readById(String id) {
+        System.out.println("CustomerService::readById() : reading a Customers with id and password in file database");
+
+        Customer customer = null;
+
+        try {
+            customer = customerDao.findById(id);
+            //customer = customerDao.findById(login_id);
+
+            if ( customer != null ) System.out.println("CustomerService::readACustomer() : " + customer);
+
+        } catch ( NullPointerException e){
+            //e.printStackTrace();
+        }
+        return customer;
+    }
+
+
+    public Customer readById(String id, String password) {
+        System.out.println("CustomerService::readById() : reading a Customers with id and password in file database");
+
+        Customer customer = null;
+
+        try {
+            customer = customerDao.findById(id, password);
+            //customer = customerDao.findById(login_id);
+
+            if ( customer != null ) System.out.println("CustomerService::readACustomer() : " + customer);
+
+        } catch ( NullPointerException e){
+            //e.printStackTrace();
+        }
+        return customer;
+    }
+
+    @Override
+    public Customer update(Customer updateObject) {
+        System.out.println("CustomerService::updateCustomer() : Customer trying to update : " + updateObject);
+
+        if(!validateCustomerInput(updateObject)){ // checking if false
+            System.out.println("User was not validated");
+            throw new RuntimeException();
+        }
+
+        // TODO: Will implement with JDBC (connecting to our database)
+        validateLogin_IDNotUsed(updateObject.getLogin_id());
+
+        if( !customerDao.update(updateObject) ){
+            throw new RuntimeException();
+        }
+        System.out.println("CustomerService::updateCustomer() : Customer has been updated: " + updateObject);
+        return updateObject;
+    }
+
+    @Override
+    public boolean delete(String id) {
+        return false;
+    }
+
+    @Override
+    public boolean validInput(Customer object) {
+        return false;
+    }
 }

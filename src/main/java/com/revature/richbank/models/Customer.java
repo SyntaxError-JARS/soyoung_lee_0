@@ -1,15 +1,19 @@
 package com.revature.richbank.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Customer {
 
 
-    // Encapsulatioed these variables and attributes. It's
-    private String customer_id   ;
+    // Encapsulated these variables and attributes.
+    // These attributes suppose to exactly match with the verbatim for JSON
+    private int customer_id   ;
     private String customer_name ;
     private String email_1       ;
     private String phone_1       ;
     private String address       ;
     private String login_id      ;
+    @JsonIgnore
     private String login_password;
     //private String login_date    ;
     private boolean block    ;
@@ -22,15 +26,16 @@ public class Customer {
      */
 
     //public Customer(String customer_name, String email_1, String phone_1, String address, String login_id, String login_password, String login_date, boolean block) {
-    public Customer(String customer_name, String email_1, String phone_1, String address, String login_id, String login_password, boolean block) {
-            super();
+
+
+    public Customer(int customer_id, String customer_name, String email_1, String phone_1, String address, String login_id, String login_password, boolean block) {
+        this.customer_id = customer_id;
         this.customer_name = customer_name;
         this.email_1 = email_1;
         this.phone_1 = phone_1;
         this.address = address;
         this.login_id = login_id;
         this.login_password = login_password;
-        //this.login_date = login_date;
         this.block = block;
     }
 
@@ -43,11 +48,11 @@ public class Customer {
         this.login_password = login_password;
     }
 
-    public String getCustomer_id() {
+    public int getCustomer_id() {
         return customer_id;
     }
 
-    public void setCustomer_id(String customer_id) {
+    public void setCustomer_id(int customer_id) {
         this.customer_id = customer_id;
     }
 
@@ -98,15 +103,7 @@ public class Customer {
     public void setLogin_password(String login_password) {
         this.login_password = login_password;
     }
-/*
-    public String getLogin_date() {
-        return login_date;
-    }
 
-    public void setLogin_date(String login_date) {
-        this.login_date = login_date;
-    }
-*/
     public boolean isBlock() {
         return block;
     }
@@ -118,13 +115,13 @@ public class Customer {
     @Override
     public String toString() {
         return "Customer{" +
-                "customer_name='" + customer_name + '\'' +
+                "customer_id=" + customer_id +
+                ", customer_name='" + customer_name + '\'' +
                 ", email_1='" + email_1 + '\'' +
                 ", phone_1='" + phone_1 + '\'' +
                 ", address='" + address + '\'' +
                 ", login_id='" + login_id + '\'' +
                 ", login_password='" + login_password + '\'' +
-                // ", login_date='" + login_date + '\'' +
                 ", block=" + block +
                 '}';
     }

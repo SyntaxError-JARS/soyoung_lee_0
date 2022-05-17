@@ -3,36 +3,42 @@ package com.revature.richbank.services;
 
 import com.revature.richbank.dos.AccountDao;
 
+import com.revature.richbank.dos.CustomerDao;
 import com.revature.richbank.exceptions.InvalidRequestException;
 import com.revature.richbank.models.Account;
+import com.revature.richbank.util.logging.Logger;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AccountService {
+public class AccountService implements Serviceable <Account> {
 
     private AccountDao accountDao = new AccountDao();
+    private CustomerDao CustomerDao = new CustomerDao();
+    private final Logger logger = Logger.getLogger(true);
+
+    public AccountService (AccountDao accountDao, CustomerDao CustomerDao) {   this.accountDao = accountDao; }
+
+
 
     public void readAccounts (){
         System.out.println("AccountService::readAccounts() : reading Accounts in file database");
 
-        Account[] accounts = new Account[0]; // ignore for now
+        List<Account> accountList = new LinkedList<>(); // ignore for now
         try {
-            accounts = accountDao.findAll();
-
-            for (int i = 0; i < accounts.length; i++) {
-                Account account = accounts[i];
-                if ( account != null )
-                        System.out.println(account);
-            }
+            accountList = accountDao.findAll();
 
             // For Each loop
             // for (Object account : accounts )
             //      if ( account != null ) System.out.println((Account)account);
-            for (Account account : accounts)   // account indicates a single element in the array accounts
+            for (Account account : accountList)   // account indicates a single element in the array accounts
+            {
                 if ( account != null ) System.out.println(account);
+            }
 
         } catch (NullPointerException | IOException e){
             //e.printStackTrace();
@@ -114,4 +120,50 @@ public class AccountService {
         return newAccount.getAccount_number() != null || !newAccount.getAccount_type().trim().equals("");
     }
 
+    @Override
+    public Account create(Account newObject) {
+        return null;
+    }
+
+    @Override
+    public List<Account> readAll() {
+        System.out.println("AccountService::readAccounts() : reading Accounts in file database");
+
+        List<Account> accountList = new LinkedList<>(); // ignore for now
+        try {
+            accountList = accountDao.findAll();
+
+            // For Each loop
+            // for (Object account : accounts )
+            //      if ( account != null ) System.out.println((Account)account);
+            for (Account account : accountList)   // account indicates a single element in the array accounts
+            {
+                if ( account != null ) System.out.println(account);
+            }
+
+        } catch (NullPointerException | IOException e){
+            //e.printStackTrace();
+        }
+        return accountList;
+    }
+
+    @Override
+    public Account readById(String id) {
+        return null;
+    }
+
+    @Override
+    public Account update(Account updateObject) {
+        return null;
+    }
+
+    @Override
+    public boolean delete(String id) {
+        return false;
+    }
+
+    @Override
+    public boolean validInput(Account object) {
+        return false;
+    }
 }

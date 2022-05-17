@@ -5,6 +5,8 @@ import com.revature.richbank.util.ConnectionFactory;
 import com.revature.richbank.util.logging.Logger;
 
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class CustomerDao implements Crudable<Customer> {
 
@@ -47,13 +49,13 @@ public class CustomerDao implements Crudable<Customer> {
 
     @Override
     //public Customer[] findAll() throws IOExcetpion {
-    public Customer[] findAll() {
+    public List<Customer> findAll() {
         logger.info("CustomerDao::findAll() : finding all customers");
 
         // FileWriter's evil counterpart, to read files
 
-        Customer[] customers = new Customer[10];
-        int index = 0;
+        List<Customer> customerList = new LinkedList<>();
+
         //connection is auto closable
         try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
 
@@ -69,6 +71,7 @@ public class CustomerDao implements Crudable<Customer> {
                 Customer customer = new Customer();
 
                 // column lable must match table column name
+                customer.setCustomer_id(rs.getInt("customer_id"));
                 customer.setCustomer_name(rs.getString("customer_name"));
                 customer.setEmail_1(rs.getString("email_1"));
                 customer.setPhone_1(rs.getString("phone_1"));
@@ -76,17 +79,15 @@ public class CustomerDao implements Crudable<Customer> {
                 customer.setLogin_id(rs.getString("login_id"));
                 customer.setLogin_password(rs.getString("login_password"));
 
-                logger.info("Going to the next line for our following index.");
-                customers[index] = customer;
-                index++; // increment the index by 1, must occur after the trainer[index] re-assignment
+                customerList.add(customer);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
-        logger.info("Returning customers information to user.");
-        return customers;
+        System.out.println("Returning customers information to user.");
+        return customerList;
     }
 
 
@@ -108,7 +109,7 @@ public class CustomerDao implements Crudable<Customer> {
             Customer customer = new Customer();
 
             // column label must match table column name
-            customer.setCustomer_id(Integer.toString(rs.getInt("customer_id")));
+            customer.setCustomer_id(rs.getInt("customer_id"));
             customer.setCustomer_name(rs.getString("customer_name"));
             customer.setEmail_1(rs.getString("email_1"));
             customer.setPhone_1(rs.getString("phone_1"));
@@ -144,7 +145,7 @@ public class CustomerDao implements Crudable<Customer> {
             System.out.println("CustomerDao::findById() : with id and password got a ResultSet");
             if ( rs.next() ) {
                 // column label must match table column name
-                customer.setCustomer_id(Integer.toString(rs.getInt("customer_id")));
+                customer.setCustomer_id(rs.getInt("customer_id"));
                 customer.setCustomer_name(rs.getString("customer_name"));
                 customer.setEmail_1(rs.getString("email_1"));
                 customer.setPhone_1(rs.getString("phone_1"));
@@ -207,8 +208,28 @@ public class CustomerDao implements Crudable<Customer> {
     public boolean delete (String login_id) {
 
         logger.info("CustomerDao::delete() : delete a customer by login_id");
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
 
-        return false;
+            // YOU NEVER NEVER NEVER USE THIS DIRECT STATEMENT
+            // Because of SQL INJECTION
+            // String sql = "insert into customer values ("
+
+            String sql = "update customer set block=true where login_id = ?";
+
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, login_id);
+
+            int checkUpdate = ps.executeUpdate();
+            if (checkUpdate == 0) {
+                throw new RuntimeException();
+            } else return true;
+
+        } catch (SQLException | RuntimeException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public void checkLogin_ID (String login_id) {
@@ -230,6 +251,42 @@ System.out.println("CustomerDao::checkLogin_ID() : got a ResultSet");
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public Customer authenticateCustomer(String login_id, String login_password) {
+
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+
+            String sql = "select * from customer where login_id = ? and login_password = ?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, login_id); // Wrapper class
+            ps.setString(2, login_password); // Wrapper class
+
+            ResultSet rs = ps.executeQuery(); // remember DQL, select is only keywords for Query
+
+            if( !rs.next() )
+                return null;
+
+            Customer customer = new Customer();
+
+            // column label must match table column name
+            customer.setCustomer_id(rs.getInt("customer_id"));
+            customer.setCustomer_name(rs.getString("customer_name"));
+            customer.setEmail_1(rs.getString("email_1"));
+            customer.setPhone_1(rs.getString("phone_1"));
+            customer.setAddress(rs.getString("address"));
+            customer.setLogin_id(rs.getString("login_id"));
+            customer.setLogin_password(rs.getString("login_password"));
+            customer.setBlock(rs.getBoolean("block"));
+
+             return customer;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

@@ -1,0 +1,29 @@
+<!-- Deployment Descriptor : web.xml file
+                             to define the URLs that map to servlets
+                             and determine which URLs require authentication and additional information. -->
+
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+             http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <!-- <display-name>Hello, Servlets!</display-name> -->
+    <display-name>Rich Bank Project 0</display-name>
+
+    <servlet>
+        <servlet-name>TestServlet</servlet-name>
+        <servlet-class>com.revature.richbank.web.servlets.TestServlet</servlet-class> <!--updated to match my file structure -->
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>TestServlet</servlet-name>
+        <!-- [INFO] FAIL - Deployed application at context path [/test-app] but context failed to start
+        <url-pattern>/test</url-pattern>
+        -->
+        <!-- [INFO] OK - Deployed application at context path [/test-app] -->
+        <url-pattern>/test-app</url-pattern>
+        <!-- <url-pattern>/*</url-pattern> this maps all URL paths(/*) to the servlet classes com.revature.richbank.web.servlets.TestServlet -->
+    </servlet-mapping>
+
+</web-app>

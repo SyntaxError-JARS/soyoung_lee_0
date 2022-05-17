@@ -54,7 +54,13 @@ public class ConnectionFactory {
     //TODO: This is specially a Singleton design pattern because of the private default constructor
     private ConnectionFactory() {
         try {
-            prop.load(new FileReader("src/main/resources/db.properties"));
+
+            // TODO: find db.properties inside the apache tomcat inside the
+            //          this ClassLoader give us specify the file name instead file path.
+            //      -- Search from the currentTread class and find the "db.properties" down below
+            ClassLoader loader = Thread.currentThread().getContextClassLoader();
+            //prop.load(new FileReader("src/main/resources/db.properties"));
+            prop.load(loader.getResourceAsStream("db.properties"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

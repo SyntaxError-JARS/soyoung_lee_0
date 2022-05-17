@@ -1,12 +1,11 @@
 package com.revature.richbank.util.logging;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-import sun.rmi.runtime.Log;
 
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -30,10 +29,42 @@ public class Logger {
         return logger;
     }
 
+    public static Logger getLogger(){
+        if(logger == null)
+            logger = new Logger(true);
+
+        return logger;
+    }
+
     // TODO : Check logging levels from IBM
     public void log(String message) {
-        try(Writer logWriter = new FileWriter("src/main/resources/soyoung_lee_p0.log", true); ) {
-            logWriter.write(message + "\n");
+
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        URL file = loader.getResource("soyoung_lee_p0.log");
+
+        //try(Writer logWriter = new FileWriter("src/main/resources/soyoung_lee_p0.log", true); ) {
+
+        System.out.println("File:" + file );
+
+        try(Writer logWriter = new FileWriter(String.valueOf(file).split(":")[1], true); ){
+            logWriter.write(LocalDateTime.now() + "  LOG: " + message + "\n");
+
+            if (printTOConsole)
+                System.out.println(LocalDateTime.now() + "  LOG: " + message );
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public void info(String message) {
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        URL file = loader.getResource("soyoung_lee_p0.log");
+
+        try(Writer logWriter = new FileWriter(String.valueOf(file).split(":")[1], true); ){
+            logWriter.write(LocalDateTime.now() + "  LOG: " + message + "\n");
 
             if (printTOConsole)
                 System.out.println(LocalDateTime.now() + "  LOG: " + message );
@@ -44,38 +75,30 @@ public class Logger {
 
     }
 
-    public void info(String message) {
-        try(Writer logWriter = new FileWriter("src/main/resources/soyoung_lee_p0.log", true); ) {
-            logWriter.write(message + "\n");
-
-            if (printTOConsole)
-                System.out.println(LocalDateTime.now() + "  INFO: " + message );
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
     public void debug (String message) {
-        try(Writer logWriter = new FileWriter("src/main/resources/soyoung_lee_p0.log", true); ) {
-            logWriter.write(message + "\n");
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        URL file = loader.getResource("soyoung_lee_p0.log");
+
+        try(Writer logWriter = new FileWriter(String.valueOf(file).split(":")[1], true); ){
+            logWriter.write(LocalDateTime.now() + "  LOG: " + message + "\n");
 
             if (printTOConsole)
-                System.out.println(LocalDateTime.now() + "  DEBUG: " + message );
+                System.out.println(LocalDateTime.now() + "  LOG: " + message );
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public void warn (String message) {
-        try(Writer logWriter = new FileWriter("src/main/resources/soyoung_lee_p0.log", true); ) {
-            logWriter.write(message + "\n");
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        URL file = loader.getResource("soyoung_lee_p0.log");
+
+        try(Writer logWriter = new FileWriter(String.valueOf(file).split(":")[1], true); ){
+            logWriter.write(LocalDateTime.now() + "  LOG: " + message + "\n");
 
             if (printTOConsole)
-                System.out.println(LocalDateTime.now() + "  WARN: " + message );
+                System.out.println(LocalDateTime.now() + "  LOG: " + message );
 
         } catch (IOException e) {
             e.printStackTrace();

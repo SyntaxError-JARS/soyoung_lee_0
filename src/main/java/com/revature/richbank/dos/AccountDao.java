@@ -1,14 +1,13 @@
 package com.revature.richbank.dos;
 
 import com.revature.richbank.models.Account;
-import com.revature.richbank.models.Account;
-import com.revature.richbank.models.Account;
-import com.revature.richbank.models.Customer;
 import com.revature.richbank.util.ConnectionFactory;
 import com.revature.richbank.util.logging.Logger;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class AccountDao implements Crudable<Account> {
 
@@ -49,13 +48,13 @@ public class AccountDao implements Crudable<Account> {
     }
 
     @Override
-    public Account[] findAll() throws IOException {
+    public List<Account> findAll() throws IOException {
         logger.info("AccountDao::findAll() : finding all accounts");
 
         // FileWriter's evil counterpart, to read files
 
-        Account[] accounts = new Account[10];
-        int index = 0;
+        List<Account> accountList = new LinkedList<>();
+
         //connection is auto closable
         try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
 
@@ -82,25 +81,23 @@ public class AccountDao implements Crudable<Account> {
                 account.setCustomer_id_2( rs.getInt("customer_id_2"));
 
                 logger.info("Going to the next line for our following index.");
-                accounts[index] = account;
-                index++; // increment the index by 1, must occur after the trainer[index] re-assignment
+                accountList.add(account);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
-        return accounts;
+        return accountList;
 
     }
 
-    public Account[] findAll(String login_id, String login_password) throws IOException {
+    public List<Account> findAll(String login_id, String login_password) throws IOException {
         logger.info("AccountDao::findAll() : finding all accounts with id and password");
 
         // FileWriter's evil counterpart, to read files
 
-        Account[] accounts = new Account[10];
-        int index = 0;
+        List<Account> accountList = new LinkedList<>();
         //connection is auto closable
         try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
 
@@ -127,8 +124,7 @@ public class AccountDao implements Crudable<Account> {
                 account.setCustomer_id_2( rs.getInt("customer_id_2"));
 
                 logger.info("Going to the next line for our following index.");
-                accounts[index] = account;
-                index++; // increment the index by 1, must occur after the trainer[index] re-assignment
+                accountList.add(account);
             }
 
         } catch (SQLException e) {
@@ -136,7 +132,7 @@ public class AccountDao implements Crudable<Account> {
             return null;
         }
 
-        return accounts;
+        return accountList;
     }
 
     @Override
