@@ -11,7 +11,7 @@ import java.util.List;
 
 public class AccountDao implements Crudable<Account> {
 
-    private final Logger logger = Logger.getLogger(true);
+    private Logger logger = Logger.getLogger();
     @Override
     public Account create(Account newAccount) {
         System.out.println("AccountDao::create() : creating new account");
@@ -90,6 +90,49 @@ public class AccountDao implements Crudable<Account> {
         }
         return accountList;
 
+    }
+
+
+    public List<Account> findAll(String login_id) throws IOException {
+        logger.info("AccountDao::findAll() : finding all accounts with id ");
+
+        // FileWriter's evil counterpart, to read files
+
+        List<Account> accountList = new LinkedList<>();
+        //connection is auto closable
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
+
+            String sql = "select * from account_info where login_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, login_id);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) { // the last line of the file is null
+                Account account = new Account();
+
+                // column lable must match table column name
+                account.setAccount_id(    rs.getInt(   "account_id"  ));
+                account.setAccount_number(rs.getString("account_number"       ));
+                account.setLast_date(     rs.getString("account_type"      ));
+                account.setAccount_type(  rs.getString("first_date"       ));
+                account.setFirst_date(    rs.getString("last_date"       ));
+                account.setInterest(      rs.getDouble("interest"));
+                account.setTotal(         rs.getDouble("total"));
+                account.setCustomer_id_1( rs.getInt("customer_id_1"));
+                account.setCustomer_id_2( rs.getInt("customer_id_2"));
+
+                logger.info("Going to the next line for our following index.");
+                accountList.add(account);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return accountList;
     }
 
     public List<Account> findAll(String login_id, String login_password) throws IOException {
@@ -173,7 +216,7 @@ public class AccountDao implements Crudable<Account> {
 
         try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
 
-            String sql = "update account set account_type = ?, last_date = ?, interest = ?, total = ? where account_number = ?";
+            String sql = "update account set account_type = ?, last_date = ?, interest = ?, total = ? where account_id = ?";
 
             PreparedStatement ps = conn.prepareStatement(sql);
 
@@ -181,7 +224,7 @@ public class AccountDao implements Crudable<Account> {
             ps.setString(2, updateAccount.getLast_date());
             ps.setDouble(3, updateAccount.getInterest());
             ps.setDouble(4, updateAccount.getTotal());
-            ps.setString(5, updateAccount.getAccount_number());
+            ps.setInt(5, updateAccount.getAccount_id());
 
             int checkUpdate = ps.executeUpdate();
             if (checkUpdate == 0) {
@@ -196,6 +239,28 @@ public class AccountDao implements Crudable<Account> {
 
     @Override
     public boolean delete(String id) {
-        return false;
+        logger.info("AccountDao::delete() : delete a account by account_id: " + id);
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
+
+            // YOU NEVER NEVER NEVER USE THIS DIRECT STATEMENT
+            // Because of SQL INJECTION
+            // String sql = "insert into customer values ("
+
+            String sql = "delete from account where account_id = ?";
+
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, id);
+
+            int checkUpdate = ps.executeUpdate();
+            if (checkUpdate == 0) {
+                throw new RuntimeException();
+            } else return true;
+
+        } catch (SQLException | RuntimeException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

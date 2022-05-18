@@ -8,13 +8,6 @@ public class LoginCreds {
 
 
     // TODO: Jackson requires a no arg constructor
-
-    /*
-    public LoginCreds(String login_id) {
-        this.login_id = login_id;
-    }
-    */
-
     public String getLogin_id() {
         return login_id;
     }

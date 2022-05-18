@@ -9,6 +9,8 @@ import com.revature.richbank.models.Account;
 import com.revature.richbank.models.Customer;
 import com.revature.richbank.util.logging.Logger;
 
+
+import java.awt.color.ICC_ColorSpace;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -19,7 +21,7 @@ import java.util.regex.Pattern;
 public class CustomerService  implements Serviceable <Customer> {
 
     private CustomerDao customerDao;
-    private final Logger logger = Logger.getLogger();
+    private Logger logger = Logger.getLogger();
 
     public CustomerService (CustomerDao customerDao) {   this.customerDao = customerDao; }
 
@@ -67,8 +69,8 @@ public class CustomerService  implements Serviceable <Customer> {
         if(newCustomer.getEmail_1() == null || newCustomer.getEmail_1().trim().equals("")) return false;
         if(newCustomer.getPhone_1() == null || newCustomer.getPhone_1().trim().equals("")) return false;
         if(newCustomer.getAddress() == null || newCustomer.getAddress().trim().equals("")) return false;
-        if(newCustomer.getLogin_id() == null || newCustomer.getLogin_id().trim().equals("")) return false;
-        return newCustomer.getLogin_password() != null || !newCustomer.getLogin_password().trim().equals("");
+        if(newCustomer.getLogin_password() == null || newCustomer.getLogin_password().trim().equals("")) return false;
+        return (newCustomer.getLogin_id() != null || !newCustomer.getLogin_id().trim().equals(""));
     }
 
     public Customer authenticateCustomer(String login_id, String login_password) {
@@ -101,7 +103,6 @@ public class CustomerService  implements Serviceable <Customer> {
         Customer persistedCustomer = customerDao.create(newObject);
 
         if(persistedCustomer == null){
-            //throw new RuntimeException();
             throw new ResourcePersistenceException("Customer was not persisted to the database upon registration.");
         }
         System.out.println("CustomerService::registerCustomer() : Customer has been persisted: " + persistedCustomer);
@@ -110,41 +111,31 @@ public class CustomerService  implements Serviceable <Customer> {
 
     @Override
     public List<Customer> readAll() {
-        System.out.println("CustomerService::readCustomers() : reading Customers in file database");
+        System.out.println("CustomerService::readAll() : reading Customers in file database");
 
-        List<Customer> customerList = new LinkedList<>(); // ignore for now
         try {
-            customerList = customerDao.findAll();
+            List<Customer> customerList = customerDao.findAll();
+            logger.info("All customers have been found here are the results: \n");
 
+            return customerList;
 
-            // For Each loop
-            // for (Object customer : customers )
-            //      if ( customer != null ) System.out.println((Customer)customer);
-            for (Customer customer : customerList)   // customer indicates a single element in the array customers
-                if ( customer != null ) System.out.println(customer);
-
-        } catch ( NullPointerException e){
-            //e.printStackTrace();
+        } catch ( IOException | NullPointerException e) {
+            e.printStackTrace();
+            return null;
         }
-        return customerList;
     }
 
     @Override
     public Customer readById(String id) {
-        System.out.println("CustomerService::readById() : reading a Customers with id and password in file database");
 
-        Customer customer = null;
-
+        System.out.println("CustomerService::readById() : reading a Customers with login_id");
         try {
-            customer = customerDao.findById(id);
-            //customer = customerDao.findById(login_id);
-
-            if ( customer != null ) System.out.println("CustomerService::readACustomer() : " + customer);
-
-        } catch ( NullPointerException e){
-            //e.printStackTrace();
+            Customer customer = customerDao.findById(id);
+            return customer;
+        } catch (NullPointerException e){
+            e.printStackTrace();
+            return null;
         }
-        return customer;
     }
 
 
@@ -160,7 +151,7 @@ public class CustomerService  implements Serviceable <Customer> {
             if ( customer != null ) System.out.println("CustomerService::readACustomer() : " + customer);
 
         } catch ( NullPointerException e){
-            //e.printStackTrace();
+             e.printStackTrace();
         }
         return customer;
     }
@@ -168,6 +159,7 @@ public class CustomerService  implements Serviceable <Customer> {
     @Override
     public Customer update(Customer updateObject) {
         System.out.println("CustomerService::updateCustomer() : Customer trying to update : " + updateObject);
+        logger.info("Customer try to be update: " + updateObject);
 
         if(!validateCustomerInput(updateObject)){ // checking if false
             System.out.println("User was not validated");
@@ -175,18 +167,26 @@ public class CustomerService  implements Serviceable <Customer> {
         }
 
         // TODO: Will implement with JDBC (connecting to our database)
-        validateLogin_IDNotUsed(updateObject.getLogin_id());
+        String login_id = updateObject.getLogin_id();
+        validateLogin_IDNotUsed(login_id);
 
         if( !customerDao.update(updateObject) ){
             throw new RuntimeException();
         }
+
+        updateObject.setCustomer_id(customerDao.checkCustomer_ID(login_id));
+
         System.out.println("CustomerService::updateCustomer() : Customer has been updated: " + updateObject);
         return updateObject;
     }
 
     @Override
     public boolean delete(String id) {
-        return false;
+        System.out.println("CustomerService::delete() : Customer trying to delete : " + id);
+        logger.info("Customer try to be delete: " + id);
+
+        return customerDao.delete(id);
+
     }
 
     @Override

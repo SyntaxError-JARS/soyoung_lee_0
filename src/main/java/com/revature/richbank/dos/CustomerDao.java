@@ -1,16 +1,18 @@
 package com.revature.richbank.dos;
 
+import com.revature.richbank.exceptions.ResourcePersistenceException;
 import com.revature.richbank.models.Customer;
 import com.revature.richbank.util.ConnectionFactory;
 import com.revature.richbank.util.logging.Logger;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
 public class CustomerDao implements Crudable<Customer> {
 
-    private final Logger logger = Logger.getLogger(true);
+    private Logger logger = Logger.getLogger();
 
 
     @Override
@@ -23,7 +25,7 @@ public class CustomerDao implements Crudable<Customer> {
             // Because of SQL INJECTION
             // String sql = "insert into customer values ("
 
-            String sql = "insert into customer ( customer_name, email_1, phone_1, address, login_id, login_password ) values (?, ?, ?, ?, ?, ?)";
+            String sql = "insert into customer ( customer_id, customer_name, email_1, phone_1, address, login_id, login_password, block ) values (default, ?, ?, ?, ?, ?, ?, default)";
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setString(1, newCustomer.getCustomer_name());
@@ -35,7 +37,7 @@ public class CustomerDao implements Crudable<Customer> {
 
             int checkInsert = ps.executeUpdate();
             if (checkInsert == 0) {
-                throw new RuntimeException();
+                throw new ResourcePersistenceException("Customer was not entered into database due to some issue.");
             }
 
         } catch (SQLException | RuntimeException e) {
@@ -49,7 +51,7 @@ public class CustomerDao implements Crudable<Customer> {
 
     @Override
     //public Customer[] findAll() throws IOExcetpion {
-    public List<Customer> findAll() {
+    public List<Customer> findAll()  throws IOException{
         logger.info("CustomerDao::findAll() : finding all customers");
 
         // FileWriter's evil counterpart, to read files
@@ -78,6 +80,7 @@ public class CustomerDao implements Crudable<Customer> {
                 customer.setAddress(rs.getString("address"));
                 customer.setLogin_id(rs.getString("login_id"));
                 customer.setLogin_password(rs.getString("login_password"));
+                customer.setBlock(rs.getBoolean("block"));
 
                 customerList.add(customer);
             }
@@ -95,7 +98,7 @@ public class CustomerDao implements Crudable<Customer> {
     @Override
     public Customer findById(String login_id) {
 
-        logger.info("CustomerDao::findById() : find a customer by login_id");
+        logger.info("CustomerDao::findById() : find a customer by login_id: [" + login_id + "]");
 
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection();) {
@@ -104,8 +107,14 @@ public class CustomerDao implements Crudable<Customer> {
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setString(1, login_id); // Wrapper class
+           // boolean canFind = ps.execute();
+
+            //System.out.println("canFind: " + canFind);
             ResultSet rs = ps.executeQuery(); // remember DQL, select is only keywords for Query
 
+            if(!rs.next()){
+                throw new ResourcePersistenceException("Customer was not found in the database, please check ID entered was correct.");
+            }
             Customer customer = new Customer();
 
             // column label must match table column name
@@ -121,6 +130,7 @@ public class CustomerDao implements Crudable<Customer> {
             return customer;
 
         } catch (SQLException e) {
+            e.printStackTrace();
             return null;
         }
 
@@ -128,7 +138,7 @@ public class CustomerDao implements Crudable<Customer> {
 
     public Customer findById(String login_id, String login_password) {
 
-        logger.info("CustomerDao::findById() : find a customer by login_id and password");
+        logger.info("CustomerDao::findById() : find a customer by login_id and login_password");
 
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection();) {
@@ -177,7 +187,7 @@ public class CustomerDao implements Crudable<Customer> {
             // Because of SQL INJECTION
             // String sql = "insert into customer values ("
 
-            String sql = "update customer set customer_name = ?, email_1 = ?, phone_1 = ?, address = ?, login_password = ? where login_id = ?";
+            String sql = "update customer set customer_name = ?, email_1 = ?, phone_1 = ?, address = ?, login_password = ?, block = ? where login_id = ?";
 
 
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -187,7 +197,8 @@ public class CustomerDao implements Crudable<Customer> {
             ps.setString(3, updateCustomer.getPhone_1());
             ps.setString(4, updateCustomer.getAddress());
             ps.setString(5, updateCustomer.getLogin_password());
-            ps.setString(6, updateCustomer.getLogin_id());
+            ps.setBoolean(6, updateCustomer.isBlock());
+            ps.setString(7, updateCustomer.getLogin_id());
 
             int checkUpdate = ps.executeUpdate();
             if (checkUpdate == 0) {
@@ -214,7 +225,8 @@ public class CustomerDao implements Crudable<Customer> {
             // Because of SQL INJECTION
             // String sql = "insert into customer values ("
 
-            String sql = "update customer set block=true where login_id = ?";
+            //String sql = "update customer set block=true where login_id = ?";
+            String sql = "delete from customer where login_id = ?";
 
 
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -251,6 +263,26 @@ System.out.println("CustomerDao::checkLogin_ID() : got a ResultSet");
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public int checkCustomer_ID(String login_id){
+        logger.info("CustomerDao::checkCustomer_ID(): find a customer_id by login_id");
+
+        int customer_id = 0;
+        try( Connection conn = ConnectionFactory.getInstance().getConnection();){
+
+            String sql = "select customer_id from customer where login_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next())
+                customer_id = rs.getInt("customer_id");
+            return customer_id;
+
+        } catch (SQLException e) {
+            e.getStackTrace();
+            return customer_id;
         }
     }
 

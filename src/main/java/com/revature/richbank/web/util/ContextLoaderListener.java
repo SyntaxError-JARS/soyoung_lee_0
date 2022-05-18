@@ -4,20 +4,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.richbank.dos.AccountDao;
 import com.revature.richbank.dos.CustomerDao;
 import com.revature.richbank.dos.TransDao;
-import com.revature.richbank.models.Customer;
-import com.revature.richbank.models.Trans;
 import com.revature.richbank.services.AccountService;
 import com.revature.richbank.services.CustomerService;
 import com.revature.richbank.services.TransService;
 import com.revature.richbank.web.servlets.AccountServlet;
 import com.revature.richbank.web.servlets.AuthServlet;
-import com.revature.richbank.web.servlets.CustomerSerlvet;
+import com.revature.richbank.web.servlets.CustomerServlet;
+import com.revature.richbank.web.servlets.TransServlet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import javax.servlet.http.HttpSession;
 
 // TODO: This listens all of surveillance and build out the context for them and
 //      what dependency they need
@@ -40,11 +38,11 @@ public class ContextLoaderListener implements ServletContextListener {
 
         // Instantiate and initialize the services  with their doo dependency.
         CustomerService customerService = new CustomerService(customerDao);
-        AccountService accountService = new AccountService(accountDao);
-        TransService transService = new TransService(transDao);
+        AccountService accountService = new AccountService(accountDao, customerDao);
+        TransService transService = new TransService(transDao, accountDao, customerDao);
 
         AuthServlet authServlet = new AuthServlet(customerService, mapper);
-        CustomerSerlvet customerSerlvet = new CustomerSerlvet(customerService, mapper);
+        CustomerServlet customerServlet = new CustomerServlet(customerService, mapper);
         AccountServlet accountServlet = new AccountServlet(accountService, mapper);
         TransServlet transServlet = new TransServlet(transService, mapper);
 
@@ -52,7 +50,7 @@ public class ContextLoaderListener implements ServletContextListener {
         context.addServlet("AuthServlet", authServlet).addMapping("/auth"); // match with actual Servlet name
         // TODO : allow to us look at every after the customer path as well
         //      multiple end points
-        context.addServlet("CustomerServlet", customerSerlvet).addMapping("/customer/*");
+        context.addServlet("CustomerServlet", customerServlet).addMapping("/customer/*");
         context.addServlet("AccountServlet", accountServlet).addMapping("/account/*");
         context.addServlet("TransServlet", transServlet).addMapping("/trans/*");
 

@@ -2,8 +2,11 @@ package com.revature.richbank.services;
 
 
 import com.revature.richbank.dos.AccountDao;
+import com.revature.richbank.dos.CustomerDao;
 import com.revature.richbank.dos.TransDao;
 import com.revature.richbank.exceptions.InvalidRequestException;
+import com.revature.richbank.exceptions.ResourcePersistenceException;
+import com.revature.richbank.models.Customer;
 import com.revature.richbank.models.Trans;
 import com.revature.richbank.util.logging.Logger;
 
@@ -13,10 +16,17 @@ import java.util.List;
 
 public class TransService implements Serviceable<Trans> {
 
-    private TransDao transDao = new TransDao();
-    private final Logger logger = Logger.getLogger(true);
+    private final TransDao transDao;
+    private final AccountDao accountDao;
+    private  final CustomerDao customerDao;
+    private Logger logger = Logger.getLogger();
 
-    public TransService (TransDao transDao) {   this.transDao = transDao; }
+    // DI - Dependency Injection
+    public TransService (TransDao transDao, AccountDao accountDao, CustomerDao customerDao) {
+        this.transDao = transDao;
+        this.accountDao = accountDao;
+        this.customerDao = customerDao;
+    }
 
     private boolean validateTransInput(Trans newTrans){
 
@@ -32,8 +42,8 @@ public class TransService implements Serviceable<Trans> {
 
     @Override
     public Trans create(Trans newObject) {
-        System.out.println("TransService::create() : Trans trying to be registered: " + newObject);
 
+        logger.info("Customer tries to make a transaction: " + newObject);
         if(!validateTransInput(newObject)){ // checking if false
             //System.out.println("User was not validated");
             throw new InvalidRequestException("User was not validated");
@@ -43,9 +53,9 @@ public class TransService implements Serviceable<Trans> {
         Trans persistedTrans = transDao.create(newObject);
 
         if(persistedTrans == null){
-            throw new RuntimeException();
+            new ResourcePersistenceException("Transaction was not persisted to the database");
         }
-        System.out.println("TransService::registerTrans() : Trans has been persisted: " + persistedTrans);
+        logger.info("The transaction has been persisted: " + newObject);
         return newObject;
     }
 
@@ -55,7 +65,7 @@ public class TransService implements Serviceable<Trans> {
     }
 
     public List<Trans> readAll(String id) {
-        System.out.println("TransService::readAll() : reading Transaction List with using id in file database");
+        System.out.println("TransService::readAll() : reading Transaction List with using account_number in file database");
 
         List<Trans> transList = new LinkedList<>(); // ignore for now
         try {
@@ -76,8 +86,24 @@ public class TransService implements Serviceable<Trans> {
 
     @Override
     public Trans readById(String id) {
-        return null;
+
+        System.out.println("TransService::readById() : reading a Transaction with trans_id in file database");
+
+        Trans trans = null;
+
+        try {
+            trans = transDao.findById(id);
+            //customer = customerDao.findById(login_id);
+
+            if (trans != null) System.out.println("TransService::readById() : " + id);
+
+        } catch (NullPointerException e) {
+            //e.printStackTrace();
+        }
+        return trans;
     }
+
+
 
     @Override
     public Trans update(Trans updateObject) {

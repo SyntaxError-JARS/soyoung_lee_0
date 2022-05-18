@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TransDao implements Crudable<Trans> {
 
-    private final Logger logger = Logger.getLogger(true);
+    private Logger logger = Logger.getLogger();
 
     @Override
     public Trans create(Trans newTrans) {

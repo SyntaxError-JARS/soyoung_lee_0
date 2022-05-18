@@ -6,6 +6,7 @@ import com.revature.richbank.dos.AccountDao;
 import com.revature.richbank.dos.CustomerDao;
 import com.revature.richbank.exceptions.InvalidRequestException;
 import com.revature.richbank.models.Account;
+import com.revature.richbank.models.Customer;
 import com.revature.richbank.util.logging.Logger;
 
 import java.io.IOException;
@@ -17,32 +18,14 @@ import java.util.regex.Pattern;
 
 public class AccountService implements Serviceable <Account> {
 
-    private AccountDao accountDao = new AccountDao();
-    private CustomerDao CustomerDao = new CustomerDao();
-    private final Logger logger = Logger.getLogger(true);
+    private AccountDao accountDao;
+    private CustomerDao customerDao;
+    private Logger logger = Logger.getLogger();
 
-    public AccountService (AccountDao accountDao, CustomerDao CustomerDao) {   this.accountDao = accountDao; }
-
-
-
-    public void readAccounts (){
-        System.out.println("AccountService::readAccounts() : reading Accounts in file database");
-
-        List<Account> accountList = new LinkedList<>(); // ignore for now
-        try {
-            accountList = accountDao.findAll();
-
-            // For Each loop
-            // for (Object account : accounts )
-            //      if ( account != null ) System.out.println((Account)account);
-            for (Account account : accountList)   // account indicates a single element in the array accounts
-            {
-                if ( account != null ) System.out.println(account);
-            }
-
-        } catch (NullPointerException | IOException e){
-            //e.printStackTrace();
-        }
+    // DI - Dependency Injection
+    public AccountService (AccountDao accountDao, CustomerDao customerDao) {
+        this.accountDao = accountDao;
+        this.customerDao = customerDao;
     }
 
     public boolean registerAccount(Account newAccount){
@@ -127,24 +110,33 @@ public class AccountService implements Serviceable <Account> {
 
     @Override
     public List<Account> readAll() {
-        System.out.println("AccountService::readAccounts() : reading Accounts in file database");
+        System.out.println("AccountService::readAll() : reading Accounts in file database");
 
-        List<Account> accountList = new LinkedList<>(); // ignore for now
         try {
+            List<Account> accountList = new LinkedList<>(); // ignore for now
+            logger.info("All accounts have been found here are the results: \n");
             accountList = accountDao.findAll();
+            return accountList;
 
-            // For Each loop
-            // for (Object account : accounts )
-            //      if ( account != null ) System.out.println((Account)account);
-            for (Account account : accountList)   // account indicates a single element in the array accounts
-            {
-                if ( account != null ) System.out.println(account);
-            }
-
-        } catch (NullPointerException | IOException e){
-            //e.printStackTrace();
+        } catch (IOException | NullPointerException e) {
+            e.printStackTrace();
+            return null;
         }
-        return accountList;
+    }
+
+    public List<Account> readAll(String id) {
+        System.out.println("AccountService::readAll() : reading Accounts with customer ID in file database");
+
+        try {
+            List<Account> accountList = new LinkedList<>(); // ignore for now
+            logger.info("All accounts for the customer have been found here are the results: \n");
+            accountList = accountDao.findAll(id);
+            return accountList;
+
+        } catch (IOException | NullPointerException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override

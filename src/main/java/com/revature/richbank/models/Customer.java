@@ -7,13 +7,14 @@ public class Customer {
 
     // Encapsulated these variables and attributes.
     // These attributes suppose to exactly match with the verbatim for JSON
+@JsonIgnore
     private int customer_id   ;
     private String customer_name ;
     private String email_1       ;
     private String phone_1       ;
     private String address       ;
     private String login_id      ;
-    @JsonIgnore
+
     private String login_password;
     //private String login_date    ;
     private boolean block    ;
