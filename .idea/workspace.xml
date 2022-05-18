@@ -6,12 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="8d0ec865-0296-4581-b33a-8076bee27ae8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/richbank/dos/AccountDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/dos/AccountDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/richbank/models/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/models/Account.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/richbank/services/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/services/AccountService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/richbank/util/logging/Logger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/util/logging/Logger.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/richbank/web/servlets/AccountServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/web/servlets/AccountServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/richbank/web/servlets/Authable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/web/servlets/Authable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/soyoung_lee_p0.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/soyoung_lee_p0.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web_backup.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web_backup.xml" afterDir="false" />
     </list>
@@ -75,6 +75,7 @@
       <recent name="C:\Users\karr1\OneDrive\Desktop\soyoung_lee_p0\src\main\java\com\revature\richbank\util" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\karr1\OneDrive\Desktop\soyoung_lee_p0\src\main\webapp" />
       <recent name="C:\Users\karr1\OneDrive\Desktop\soyoung_lee_p0\src\main" />
       <recent name="C:\Users\karr1\OneDrive\Desktop\soyoung_lee_p0\src\webapp\WEB-INF" />
       <recent name="C:\Users\karr1\OneDrive\Desktop\soyoung_lee_p0\src\main\resources" />

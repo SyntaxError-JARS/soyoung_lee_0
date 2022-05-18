@@ -1,5 +1,6 @@
 package com.revature.richbank.dos;
 
+import com.revature.richbank.exceptions.ResourcePersistenceException;
 import com.revature.richbank.models.Account;
 import com.revature.richbank.util.ConnectionFactory;
 import com.revature.richbank.util.logging.Logger;
@@ -19,8 +20,8 @@ public class AccountDao implements Crudable<Account> {
         try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
 
             String sql = "insert into account " +
-                    "values (account_id, account_number, account_type, first_date, last_date, interest, total, customer_id_1, customer_id_2)" +
-                    "       (default,    ?,               ?,           ?,           ?,        default,  ?,     ?,              ?)";
+                    "          (account_id, account_number, account_type, first_date, last_date, interest, total, customer_id_1, customer_id_2)" +
+                    "   values (default,    ?,               ?,           ?,           ?,        ?,  ?,     ?,              ?)";
 
 
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -28,10 +29,11 @@ public class AccountDao implements Crudable<Account> {
             ps.setString(1, newAccount.getAccount_number());
             ps.setString(2, newAccount.getAccount_type());
             ps.setString(3, newAccount.getFirst_date());
-            ps.setDouble(4, newAccount.getInterest());
-            ps.setDouble(5, newAccount.getTotal());
-            ps.setInt(6, newAccount.getCustomer_id_1());
-            ps.setInt(7, newAccount.getCustomer_id_2());;
+            ps.setString(4, newAccount.getLast_date());
+            ps.setDouble(5, newAccount.getInterest());
+            ps.setDouble(6, newAccount.getTotal());
+            ps.setInt(7, newAccount.getCustomer_id_1());
+            ps.setInt(8, newAccount.getCustomer_id_2());;
 
             int checkInsert = ps.executeUpdate();
             if (checkInsert == 0) {
@@ -69,12 +71,13 @@ public class AccountDao implements Crudable<Account> {
             while (rs.next()) { // the last line of the file is null
                 Account account = new Account();
 
-                // column lable must match table column name
+                // column label must match table column name
+
                 account.setAccount_id(    rs.getInt(   "account_id"  ));
                 account.setAccount_number(rs.getString("account_number"       ));
-                account.setLast_date(     rs.getString("account_type"      ));
-                account.setAccount_type(  rs.getString("first_date"       ));
-                account.setFirst_date(    rs.getString("last_date"       ));
+                account.setAccount_type(  rs.getString("account_type"      ));
+                account.setFirst_date(    rs.getString("first_date"       ));
+                account.setLast_date(rs.getString("last_date"));
                 account.setInterest(      rs.getDouble("interest"));
                 account.setTotal(         rs.getDouble("total"));
                 account.setCustomer_id_1( rs.getInt("customer_id_1"));
@@ -106,8 +109,8 @@ public class AccountDao implements Crudable<Account> {
             String sql = "select * from account where customer_id_1 = ? or customer_id_2 = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
 
-            ps.setString(1, customer_id);
-            ps.setString(2, customer_id);
+            ps.setInt(1, Integer.parseInt(customer_id));
+            ps.setInt(2, Integer.parseInt(customer_id));
 
 
             ResultSet rs = ps.executeQuery();
@@ -118,9 +121,9 @@ public class AccountDao implements Crudable<Account> {
                 // column lable must match table column name
                 account.setAccount_id(    rs.getInt(   "account_id"  ));
                 account.setAccount_number(rs.getString("account_number"       ));
-                account.setLast_date(     rs.getString("account_type"      ));
-                account.setAccount_type(  rs.getString("first_date"       ));
-                account.setFirst_date(    rs.getString("last_date"       ));
+                account.setAccount_type(  rs.getString("account_type"      ));
+                account.setFirst_date(    rs.getString("first_date"       ));
+                account.setLast_date(rs.getString("last_date"));
                 account.setInterest(      rs.getDouble("interest"));
                 account.setTotal(         rs.getDouble("total"));
                 account.setCustomer_id_1( rs.getInt("customer_id_1"));
@@ -158,12 +161,12 @@ public class AccountDao implements Crudable<Account> {
             while (rs.next()) { // the last line of the file is null
                 Account account = new Account();
 
-                // column lable must match table column name
+                // column label must match table column name
                 account.setAccount_id(    rs.getInt(   "account_id"  ));
                 account.setAccount_number(rs.getString("account_number"       ));
-                account.setLast_date(     rs.getString("account_type"      ));
-                account.setAccount_type(  rs.getString("first_date"       ));
-                account.setFirst_date(    rs.getString("last_date"       ));
+                account.setAccount_type(  rs.getString("account_type"       ));
+                account.setFirst_date(    rs.getString("first_date"       ));
+                account.setLast_date(     rs.getString("last_date"      ));
                 account.setInterest(      rs.getDouble("interest"));
                 account.setTotal(         rs.getDouble("total"));
                 account.setCustomer_id_1( rs.getInt("customer_id_1"));
@@ -183,7 +186,7 @@ public class AccountDao implements Crudable<Account> {
 
     @Override
     public Account findById(String account_number) {
-        logger.info("AccountDao::findById() : find a account by account_number");
+        logger.info("AccountDao::findById() : find a account by account_number: " + account_number);
 
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection();) {
@@ -194,13 +197,17 @@ public class AccountDao implements Crudable<Account> {
             ps.setString(1, account_number); // Wrapper class
             ResultSet rs = ps.executeQuery(); // remember DQL, select is only keywords for Query
 
+            if(!rs.next()){
+                throw new ResourcePersistenceException("This account was not found in the database, please check ID entered was correct.");
+            }
+
             Account account = new Account();
 
             account.setAccount_id(    rs.getInt(   "account_id"  ));
             account.setAccount_number(rs.getString("account_number"       ));
-            account.setLast_date(     rs.getString("account_type"      ));
-            account.setAccount_type(  rs.getString("first_date"       ));
-            account.setFirst_date(    rs.getString("last_date"       ));
+            account.setAccount_type(  rs.getString("account_type"       ));
+            account.setFirst_date(    rs.getString("first_date"       ));
+            account.setLast_date(     rs.getString("last_date"      ));
             account.setInterest(      rs.getDouble("interest"));
             account.setTotal(         rs.getDouble("total"));
             account.setCustomer_id_1( rs.getInt("customer_id_1"));
@@ -210,6 +217,7 @@ public class AccountDao implements Crudable<Account> {
             return account;
 
         } catch (SQLException e) {
+            e.printStackTrace();
             return null;
         }
     }

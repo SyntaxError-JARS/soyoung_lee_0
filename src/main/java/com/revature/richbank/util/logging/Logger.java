@@ -43,11 +43,14 @@ public class Logger {
         URL file = loader.getResource("soyoung_lee_p0.log");
 
         //try(Writer logWriter = new FileWriter("src/main/resources/soyoung_lee_p0.log", true); ) {
+        // Actual logging file --> C:\Program Files\apache-tomcat-9.0.62\webapps\soyoung_lee_p0\WEB-INF\classes
 
-        System.out.println("File:" + file );
+        System.out.println("Login url File:" + file );
 
         try(Writer logWriter = new FileWriter(String.valueOf(file).split(":")[1], true); ){
+
             logWriter.write(LocalDateTime.now() + "  LOG: " + message + "\n");
+            logger.info("logger logger logger");
 
             if (printTOConsole)
                 System.out.println(LocalDateTime.now() + "  LOG: " + message );

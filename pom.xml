@@ -27,8 +27,8 @@
                     <configuration>
                         <url>http://localhost:8080/manager/text</url>
                         <server>LocalTomcat</server>
-                        <path>/test-app</path>
-                        <!--<path>/soyoung_lee_p0</path>-->
+                        <!--<path>/test-app</path>-->
+                        <path>/soyoung_lee_p0</path>
                         <update>true</update> <!-- when you run it automatically undeploy then redeploy -->
                     </configuration>
                 </plugin>

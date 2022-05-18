@@ -35,15 +35,15 @@ public class AccountServlet extends HttpServlet implements Authable {
 
             //String path = getPathInfo(req);
 
-            if (req.getParameter("account_id") != null) {
-                Account account = accountService.readById(req.getParameter("account_id"));
+            if (req.getParameter("account_number") != null) {
+                Account account = accountService.readById(req.getParameter("account_number"));
                 String payload = mapper.writeValueAsString(account);
                 resp.getWriter().write(payload);
                 return;
             }
 
-            if (req.getParameter("account_number") != null) {
-                List<Account> accountList = accountService.readAll(req.getParameter("account_number"));
+            if (req.getParameter("customer_id") != null) {
+                List<Account> accountList = accountService.readAll(req.getParameter("customer_id"));
                 String payload = mapper.writeValueAsString(accountList);
                 resp.getWriter().write(payload);
                 return;
