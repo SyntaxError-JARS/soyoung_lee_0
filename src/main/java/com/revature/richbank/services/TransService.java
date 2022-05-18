@@ -6,6 +6,7 @@ import com.revature.richbank.dos.CustomerDao;
 import com.revature.richbank.dos.TransDao;
 import com.revature.richbank.exceptions.InvalidRequestException;
 import com.revature.richbank.exceptions.ResourcePersistenceException;
+import com.revature.richbank.models.Account;
 import com.revature.richbank.models.Customer;
 import com.revature.richbank.models.Trans;
 import com.revature.richbank.util.logging.Logger;
@@ -61,7 +62,18 @@ public class TransService implements Serviceable<Trans> {
 
     @Override
     public List<Trans> readAll() {
-        return null;
+        System.out.println("TransService::readAll() : reading all transactions in file database");
+
+        try {
+            List<Trans> transList = new LinkedList<>(); // ignore for now
+            logger.info("All accounts have been found here are the results: \n");
+            transList = transDao.findAll();
+            return transList;
+
+        } catch (IOException | NullPointerException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public List<Trans> readAll(String id) {

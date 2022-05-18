@@ -28,22 +28,6 @@ public class AccountService implements Serviceable <Account> {
         this.customerDao = customerDao;
     }
 
-    public boolean updateAccount(Account updateAccount) {
-        System.out.println("AccountService::updateAccount() : Account trying to update : " + updateAccount);
-
-        if(!validateAccountInput(updateAccount)){ // checking if false
-            System.out.println("User was not validated");
-            throw new RuntimeException();
-        }
-
-        // TODO: Will implement with JDBC (connecting to our database)
-        if( !accountDao.update(updateAccount) ){
-            throw new RuntimeException();
-        }
-        System.out.println("AccountService::updateAccount() : Account has been updated: " + updateAccount);
-        return true;
-    }
-
 
     private boolean validateAccountInput(Account newAccount){
 
@@ -56,8 +40,10 @@ public class AccountService implements Serviceable <Account> {
         if( newAccount.getAccount_type().trim().equals("closed") && (newAccount.getLast_date() == null || newAccount.getLast_date().trim().equals("")) )
             newAccount.setLast_date(LocalDate.now().toString());
         if(newAccount.getCustomer_id_1() == 0) return false;
+        if(newAccount.getTotal() < 0) return false;
         return newAccount.getAccount_number() != null || !newAccount.getAccount_type().trim().equals("");
     }
+
 
     @Override
     public Account create(Account newObject) {
@@ -65,7 +51,7 @@ public class AccountService implements Serviceable <Account> {
 
         if(!validateAccountInput(newObject)){ // checking if false
             //System.out.println("User was not validated");
-            throw new InvalidRequestException("User was not validated");
+            throw new InvalidRequestException("Account information was not validated");
         }
 
         // TODO: Will implement with JDBC (connecting to our database)
@@ -124,7 +110,7 @@ public class AccountService implements Serviceable <Account> {
 
     @Override
     public Account update(Account updateObject) {
-        System.out.println("AccountService::updateAccount() : Customer tries to update : " + updateObject);
+        System.out.println("AccountService::update() : Customer tries to update : " + updateObject);
 
         if(!validateAccountInput(updateObject)){ // checking if false
             System.out.println("User was not validated");
@@ -135,7 +121,7 @@ public class AccountService implements Serviceable <Account> {
         if( !accountDao.update(updateObject) ){
             throw new RuntimeException();
         }
-        System.out.println("AccountService::updateAccount() : Account has been updated: " + updateObject);
+        System.out.println("AccountService::update() : Account has been updated: " + updateObject);
         return updateObject;
     }
 
@@ -145,6 +131,13 @@ public class AccountService implements Serviceable <Account> {
         logger.info("Customer tries to delete an account: " + account_number);
 
         return customerDao.delete(account_number);
+    }
+
+    public boolean close(String account_number) {
+        System.out.println("AccountService::close() : Customer tries to close their account : " + account_number);
+        logger.info("Customer tries to close an account: " + account_number);
+
+        return accountDao.close(account_number);
     }
 
     @Override

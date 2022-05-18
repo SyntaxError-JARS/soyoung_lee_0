@@ -60,6 +60,7 @@ public class AccountServlet extends HttpServlet implements Authable {
         protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
             if(!checkAuth(req, resp)) return;
+
             // TODO: Let's create a account
             Account newAccount = mapper.readValue(req.getInputStream(), Account.class); // from JSON to Java Object (Account)
             Account persistedAccount = accountService.create(newAccount);

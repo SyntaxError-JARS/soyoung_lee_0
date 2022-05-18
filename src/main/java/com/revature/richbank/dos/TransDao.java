@@ -50,9 +50,39 @@ public class TransDao implements Crudable<Trans> {
 
     @Override
     public List<Trans> findAll() throws IOException {
-        return null;
-    }
+        logger.info("TransDao::findAll() : finding all transactions from database");
 
+        List<Trans> transList = new LinkedList<>();
+        //connection is auto closable
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
+
+            String sql = "select * from trans";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery(); // remember DQL, select is only keywords for Query
+
+            while (rs.next()) { // the last line of the file is null
+                Trans trans = new Trans();
+
+                // column label must match table column name
+                trans.setTrans_id(rs.getInt("trans_id"));
+                trans.setAccount_number(rs.getString("account_number"));
+                trans.setTrans_type(rs.getString("trans_type"));
+                trans.setTrans_date(rs.getString("trans_date"));
+                trans.setFrom_account(rs.getString("from_account"));
+                trans.setTo_account(rs.getString("to_account"));
+                trans.setAmount(rs.getDouble("amount"));
+
+                transList.add(trans);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        logger.info("Returning all transaction information to user.");
+        return transList;
+    }
 
     public List<Trans> findAll(String account_number) throws IOException {
         logger.info("TransDao::findAll() : finding all trans");
@@ -77,14 +107,12 @@ public class TransDao implements Crudable<Trans> {
                 // column lable must match table column name
                 trans.setTrans_id(rs.getInt("trans_id"));
                 trans.setAccount_number(rs.getString("account_number"));
-                trans.setTrans_date(rs.getString("trans_type"));
+                trans.setTrans_type(rs.getString("trans_type"));
                 trans.setTrans_date(rs.getString("trans_date"));
                 trans.setFrom_account(rs.getString("from_account"));
                 trans.setTo_account(rs.getString("to_account"));
                 trans.setAmount(rs.getDouble("amount"));
 
-
-                logger.info("Going to the next line for our following index.");
                 transList.add(trans);
             }
 
@@ -97,9 +125,9 @@ public class TransDao implements Crudable<Trans> {
     }
 
     @Override
-    public Trans findById(String id) {
+    public Trans findById(String trans_id) {
 
-        logger.info("TransDao::findById() : find a transaction by trans_id ");
+        logger.info("TransDao::findById() : find a transaction by trans_id: " + trans_id );
 
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection();) {
@@ -112,7 +140,42 @@ public class TransDao implements Crudable<Trans> {
             String sql = "select * from trans where trans_id = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
 
-            ps.setString(1, id); // Wrapper class
+            ps.setInt(1, Integer.parseInt(trans_id)); // Wrapper class
+            ResultSet rs = ps.executeQuery(); // remember DQL, select is only keywords for Query
+
+            Trans trans = new Trans();
+
+            trans.setTrans_id( rs.getInt(   "trans_id"));
+            trans.setAccount_number(rs.getString("account_number"));
+            trans.setTrans_type(rs.getString("trans_type"));
+            trans.setTrans_date(rs.getString("trans_date"));
+            trans.setFrom_account(rs.getString("from_account"));
+            trans.setTo_account(rs.getString("to_account"));
+            trans.setAmount(rs.getDouble("amount"));
+
+            return trans;
+
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public double findTotalBalance(String account_number) {
+
+        logger.info("TransDao::findTotalBalance() : find the total balance by account_number: " + account_number );
+
+
+        try(Connection conn = ConnectionFactory.getInstance().getConnection();) {
+
+            // TODO : Later I will make a view with name "trans_inf0"
+            //        for the detail information for a transaction
+            //        with customer table and account table
+            //          String sql = "select * from trans where trans_id = ?";
+
+            String sql = "select * from trans where trans_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setInt(1, Integer.parseInt(trans_id)); // Wrapper class
             ResultSet rs = ps.executeQuery(); // remember DQL, select is only keywords for Query
 
             Trans trans = new Trans();
@@ -144,9 +207,10 @@ public class TransDao implements Crudable<Trans> {
 
             ps.setString(1, updateTrans.getTrans_date());
             ps.setString(2, updateTrans.getTrans_type());
-            ps.setString(2, updateTrans.getFrom_account());
-            ps.setString(3, updateTrans.getTo_account());
-            ps.setInt(4, updateTrans.getTrans_id());
+            ps.setString(3, updateTrans.getFrom_account());
+            ps.setString(4, updateTrans.getTo_account());
+            ps.setDouble(5, updateTrans.getAmount());
+            ps.setInt(6, updateTrans.getTrans_id());
 
             int checkUpdate = ps.executeUpdate();
             if (checkUpdate == 0) {

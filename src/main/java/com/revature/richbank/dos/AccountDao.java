@@ -7,6 +7,7 @@ import com.revature.richbank.util.logging.Logger;
 
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -83,7 +84,6 @@ public class AccountDao implements Crudable<Account> {
                 account.setCustomer_id_1( rs.getInt("customer_id_1"));
                 account.setCustomer_id_2( rs.getInt("customer_id_2"));
 
-                logger.info("Going to the next line for our following index.");
                 accountList.add(account);
             }
 
@@ -129,7 +129,6 @@ public class AccountDao implements Crudable<Account> {
                 account.setCustomer_id_1( rs.getInt("customer_id_1"));
                 account.setCustomer_id_2( rs.getInt("customer_id_2"));
 
-                logger.info("Going to the next line for our following index.");
                 accountList.add(account);
             }
 
@@ -222,6 +221,32 @@ public class AccountDao implements Crudable<Account> {
         }
     }
 
+    public double findTotal(String account_number) {
+        logger.info("AccountDao::findTotal() : find a account by account_number: " + account_number);
+
+        double total = 0.00;
+        try(Connection conn = ConnectionFactory.getInstance().getConnection();) {
+            String sql = "select total from account where account_number = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, account_number); // Wrapper class
+            ResultSet rs = ps.executeQuery(); // remember DQL, select is only keywords for Query
+
+            if(!rs.next()){
+                throw new ResourcePersistenceException("This account was not found in the database, please check ID entered was correct.");
+            }
+
+             total = rs.getDouble("total");
+
+            return total;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return total;
+        }
+
+    }
+
     @Override
     public boolean update(Account updateAccount) {
         logger.info("AccountDao::update() : update an account" + updateAccount);
@@ -260,6 +285,29 @@ public class AccountDao implements Crudable<Account> {
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setString(1, account_number);
+
+            int checkUpdate = ps.executeUpdate();
+            if (checkUpdate == 0) {
+                throw new RuntimeException();
+            } else return true;
+
+        } catch (SQLException | RuntimeException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean close(String account_number) {
+        logger.info("AccountDao::close() : close an account by account_number");
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
+
+            String sql = "update account set account_type = ?, last_date = ? where account_number = ?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, "closed");
+            ps.setString(2, LocalDate.now().toString());
+            ps.setString(3, account_number);
 
             int checkUpdate = ps.executeUpdate();
             if (checkUpdate == 0) {
