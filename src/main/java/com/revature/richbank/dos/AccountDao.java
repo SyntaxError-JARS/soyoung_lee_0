@@ -58,7 +58,7 @@ public class AccountDao implements Crudable<Account> {
         //connection is auto closable
         try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
 
-            String sql = "select * from account_info";
+            String sql = "select * from account";
             Statement s = conn.createStatement();
 
             // generally not used
@@ -93,8 +93,8 @@ public class AccountDao implements Crudable<Account> {
     }
 
 
-    public List<Account> findAll(String login_id) throws IOException {
-        logger.info("AccountDao::findAll() : finding all accounts with id ");
+    public List<Account> findAll(String customer_id) throws IOException {
+        logger.info("AccountDao::findAll() : finding all accounts with customer_id: " + customer_id);
 
         // FileWriter's evil counterpart, to read files
 
@@ -102,10 +102,13 @@ public class AccountDao implements Crudable<Account> {
         //connection is auto closable
         try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
 
-            String sql = "select * from account_info where login_id = ?";
+            //String sql = "select * from account_info where customer_id_1 = ? or customer_id_2 = ?";
+            String sql = "select * from account where customer_id_1 = ? or customer_id_2 = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
 
-            ps.setString(1, login_id);
+            ps.setString(1, customer_id);
+            ps.setString(2, customer_id);
+
 
             ResultSet rs = ps.executeQuery();
 
@@ -179,15 +182,16 @@ public class AccountDao implements Crudable<Account> {
     }
 
     @Override
-    public Account findById(String id) {
-        logger.info("AccountDao::findById() : find a account by login_id");
+    public Account findById(String account_number) {
+        logger.info("AccountDao::findById() : find a account by account_number");
 
 
         try(Connection conn = ConnectionFactory.getInstance().getConnection();) {
-            String sql = "select * from account_info where login_id = ?";
+            //String sql = "select * from account_info where account_number = ?";
+            String sql = "select * from account where account_number = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
 
-            ps.setString(1, id); // Wrapper class
+            ps.setString(1, account_number); // Wrapper class
             ResultSet rs = ps.executeQuery(); // remember DQL, select is only keywords for Query
 
             Account account = new Account();
@@ -216,7 +220,7 @@ public class AccountDao implements Crudable<Account> {
 
         try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
 
-            String sql = "update account set account_type = ?, last_date = ?, interest = ?, total = ? where account_id = ?";
+            String sql = "update account set account_type = ?, last_date = ?, interest = ?, total = ? where account_number = ?";
 
             PreparedStatement ps = conn.prepareStatement(sql);
 
@@ -224,7 +228,7 @@ public class AccountDao implements Crudable<Account> {
             ps.setString(2, updateAccount.getLast_date());
             ps.setDouble(3, updateAccount.getInterest());
             ps.setDouble(4, updateAccount.getTotal());
-            ps.setInt(5, updateAccount.getAccount_id());
+            ps.setString(5, updateAccount.getAccount_number());
 
             int checkUpdate = ps.executeUpdate();
             if (checkUpdate == 0) {
@@ -238,20 +242,16 @@ public class AccountDao implements Crudable<Account> {
     }
 
     @Override
-    public boolean delete(String id) {
-        logger.info("AccountDao::delete() : delete a account by account_id: " + id);
+    public boolean delete(String account_number) {
+        logger.info("AccountDao::delete() : delete a account by account_number");
         try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
 
-            // YOU NEVER NEVER NEVER USE THIS DIRECT STATEMENT
-            // Because of SQL INJECTION
-            // String sql = "insert into customer values ("
-
-            String sql = "delete from account where account_id = ?";
+            String sql = "delete from account where account_number = ?";
 
 
             PreparedStatement ps = conn.prepareStatement(sql);
 
-            ps.setString(1, id);
+            ps.setString(1, account_number);
 
             int checkUpdate = ps.executeUpdate();
             if (checkUpdate == 0) {

@@ -1,11 +1,14 @@
 package com.revature.richbank.web.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.richbank.exceptions.ResourcePersistenceException;
 import com.revature.richbank.models.Account;
+import com.revature.richbank.models.Customer;
 import com.revature.richbank.services.AccountService;
 import com.revature.richbank.util.logging.Logger;
 
 import static com.revature.richbank.web.servlets.Authable.checkAuth;
+import static com.revature.richbank.web.servlets.Authable.getPathInfo;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,9 +30,21 @@ public class AccountServlet extends HttpServlet implements Authable {
 
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-            if(req.getParameter("account_id") != null){
+
+            if (!checkAuth(req, resp)) return;
+
+            //String path = getPathInfo(req);
+
+            if (req.getParameter("account_id") != null) {
                 Account account = accountService.readById(req.getParameter("account_id"));
                 String payload = mapper.writeValueAsString(account);
+                resp.getWriter().write(payload);
+                return;
+            }
+
+            if (req.getParameter("account_number") != null) {
+                List<Account> accountList = accountService.readAll(req.getParameter("account_number"));
+                String payload = mapper.writeValueAsString(accountList);
                 resp.getWriter().write(payload);
                 return;
             }
@@ -56,15 +71,34 @@ public class AccountServlet extends HttpServlet implements Authable {
             resp.setStatus(201);
         }
 
-        @Override
-        protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        if(!checkAuth(req, resp))   return;
+
+        Account account = mapper.readValue(req.getInputStream(), Account.class);
+        Account persistedAccount = accountService.update(account);
+
+        String payload = mapper.writeValueAsString(persistedAccount);
+        resp.getWriter().write(payload);
+        resp.setStatus(200); //success
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if(!checkAuth(req, resp))   return;
+
+        Account account = mapper.readValue(req.getInputStream(), Account.class);
+        if ( !accountService.delete(account.getAccount_number()) ){
+            resp.getWriter().write("Fail to delete account.");
+            resp.setStatus(401); // Unauthorized
+            return;
         }
 
-        @Override
-        protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-
-        }
+        String payload = mapper.writeValueAsString(account);
+        resp.getWriter().write(payload);
+        //resp.getWriter().write("<h1>/Account was deleted!!</h1>");
+        resp.setStatus(200); //success
+    }
 }

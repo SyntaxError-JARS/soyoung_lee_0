@@ -28,24 +28,6 @@ public class AccountService implements Serviceable <Account> {
         this.customerDao = customerDao;
     }
 
-    public boolean registerAccount(Account newAccount){
-        System.out.println("AccountService::registerAccount() : Account trying to be registered: " + newAccount);
-
-        if(!validateAccountInput(newAccount)){ // checking if false
-            //System.out.println("User was not validated");
-            throw new InvalidRequestException("User was not validated");
-        }
-
-        // TODO: Will implement with JDBC (connecting to our database)
-        Account persistedAccount = accountDao.create(newAccount);
-
-        if(persistedAccount == null){
-            throw new RuntimeException();
-        }
-        System.out.println("AccountService::registerAccount() : Account has been persisted: " + persistedAccount);
-        return true;
-    }
-
     public boolean updateAccount(Account updateAccount) {
         System.out.println("AccountService::updateAccount() : Account trying to update : " + updateAccount);
 
@@ -62,32 +44,6 @@ public class AccountService implements Serviceable <Account> {
         return true;
     }
 
-    public boolean isValidEmailAddress(String email) {
-
-        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-        // InternetAddreess internetAddreess = new InternetAddressemail(email);
-        // internetAddreess.validate();
-        return email.matches(regex);
-    }
-
-    public boolean isValidPassword(String password) {
-        if ( password.length() >= 8 ) {
-            Pattern letter = Pattern.compile("[a-zA-Z]");
-            Pattern digit = Pattern.compile("[0-9]");
-            Pattern special = Pattern.compile("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
-            // Pattern length = Pattern.compile(".{8}"); // length check
-
-            Matcher hasLetter = letter.matcher(password);
-            Matcher hasDigit = digit.matcher(password);
-            Matcher hasSpecial = special.matcher(password);
-
-            return hasLetter.find() && hasDigit.find() && hasSpecial.find();
-        } else
-            return false;
-
-        // String regex = "^(?=.*\\\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{8,20}$";
-        // return password.matches(regex);
-    }
 
     private boolean validateAccountInput(Account newAccount){
 
@@ -105,7 +61,21 @@ public class AccountService implements Serviceable <Account> {
 
     @Override
     public Account create(Account newObject) {
-        return null;
+        System.out.println("AccountService::create() : Account trying to be registered: " + newObject);
+
+        if(!validateAccountInput(newObject)){ // checking if false
+            //System.out.println("User was not validated");
+            throw new InvalidRequestException("User was not validated");
+        }
+
+        // TODO: Will implement with JDBC (connecting to our database)
+        Account persistedAccount = accountDao.create(newObject);
+
+        if(persistedAccount == null){
+            throw new RuntimeException();
+        }
+        System.out.println("AccountService::registerAccount() : Account has been persisted: " + persistedAccount);
+        return newObject;
     }
 
     @Override
@@ -124,13 +94,13 @@ public class AccountService implements Serviceable <Account> {
         }
     }
 
-    public List<Account> readAll(String id) {
+    public List<Account> readAll(String customer_id) {
         System.out.println("AccountService::readAll() : reading Accounts with customer ID in file database");
 
         try {
             List<Account> accountList = new LinkedList<>(); // ignore for now
             logger.info("All accounts for the customer have been found here are the results: \n");
-            accountList = accountDao.findAll(id);
+            accountList = accountDao.findAll(customer_id);
             return accountList;
 
         } catch (IOException | NullPointerException e) {
@@ -140,22 +110,47 @@ public class AccountService implements Serviceable <Account> {
     }
 
     @Override
-    public Account readById(String id) {
-        return null;
+    public Account readById(String account_number) {
+
+        System.out.println("AccountService::readById() : reading an account with account_number: " + account_number);
+        try {
+            Account account = accountDao.findById(account_number);
+            return account;
+        } catch (NullPointerException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public Account update(Account updateObject) {
-        return null;
+        System.out.println("AccountService::updateAccount() : Customer tries to update : " + updateObject);
+
+        if(!validateAccountInput(updateObject)){ // checking if false
+            System.out.println("User was not validated");
+            throw new RuntimeException();
+        }
+
+        // TODO: Will implement with JDBC (connecting to our database)
+        if( !accountDao.update(updateObject) ){
+            throw new RuntimeException();
+        }
+        System.out.println("AccountService::updateAccount() : Account has been updated: " + updateObject);
+        return updateObject;
     }
 
     @Override
-    public boolean delete(String id) {
-        return false;
+    public boolean delete(String account_number) {
+        System.out.println("AccountService::delete() : Customer tries to delete an account: " + account_number);
+        logger.info("Customer tries to delete an account: " + account_number);
+
+        return customerDao.delete(account_number);
     }
 
     @Override
     public boolean validInput(Account object) {
         return false;
     }
+
+
 }

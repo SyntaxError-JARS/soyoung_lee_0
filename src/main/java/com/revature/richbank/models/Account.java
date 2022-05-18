@@ -1,6 +1,9 @@
 package com.revature.richbank.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Account {
+    @JsonIgnore
     private int account_id;
     private String account_number;
     private String account_type;

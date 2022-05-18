@@ -15,4 +15,10 @@ public interface Authable {
         }
         return true;
     }
+
+
+    static String getPathInfo(HttpServletRequest req) {
+        String[] pathParts = req.getPathInfo().split("/");
+        return pathParts[1];
+    }
 }
