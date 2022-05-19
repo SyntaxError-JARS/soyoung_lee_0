@@ -247,6 +247,7 @@ public class AccountDao implements Crudable<Account> {
 
     }
 
+    // This doesn't work
     public boolean updateBalance(String account_number) {
         logger.info("AccountDao::updateBalance() : update a amount with account_number: "  + account_number);
 
@@ -272,6 +273,30 @@ public class AccountDao implements Crudable<Account> {
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setString(1, account_number);
+
+            int checkUpdate = ps.executeUpdate();
+            if (checkUpdate == 0) {
+                throw new RuntimeException();
+            } else return true;
+
+        } catch (SQLException | RuntimeException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateBalance(double totalBalance, String account_number) {
+        logger.info("AccountDao::updateBalance() : update a amount with account_number: "  + account_number);
+
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
+
+            //String sql = "update account set total = ? where account_number = ?";
+            String sql = "update account SET total = ? where account_number = ?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setDouble(1, totalBalance);
+            ps.setString(2, account_number);
 
             int checkUpdate = ps.executeUpdate();
             if (checkUpdate == 0) {

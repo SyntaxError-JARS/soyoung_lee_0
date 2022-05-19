@@ -23,6 +23,7 @@ public class TransService implements Serviceable<Trans> {
     private  final CustomerDao customerDao;
     private Logger logger = Logger.getLogger();
 
+
     // DI - Dependency Injection
     public TransService (TransDao transDao, AccountDao accountDao, CustomerDao customerDao) {
         this.transDao = transDao;
@@ -43,7 +44,7 @@ public class TransService implements Serviceable<Trans> {
 
         double currentBalance = accountDao.findTotal(newTrans.getAccount_number());
         double amount = newTrans.getAmount();
-        if((newTrans.getTrans_type().equals("transferTo") || newTrans.getTrans_type().equals("withdraw")) && (currentBalance < amount))
+        if((newTrans.getTrans_type().equals("transfer") || newTrans.getTrans_type().equals("withdraw")) && (currentBalance < amount))
             return false;
         return newTrans.getAccount_number() != null || !newTrans.getTrans_type().trim().equals("");
     }
@@ -64,8 +65,26 @@ public class TransService implements Serviceable<Trans> {
             new ResourcePersistenceException("Transaction was not persisted to the database");
         }
 
-        if( !accountDao.updateBalance(newObject.getAccount_number())){
+        double totalBalance = 0.00;
+        double currentBalance = accountDao.findTotal(newObject.getAccount_number());
+        double amount = newObject.getAmount();
+        if(newObject.getTrans_type().equals("deposit"))
+            totalBalance = currentBalance + Math.abs(amount);
+        else
+            totalBalance = currentBalance - Math.abs(amount);
+
+        if( !accountDao.updateBalance(totalBalance, newObject.getAccount_number())){
             throw new RuntimeException();
+        }
+
+        if(newObject.getTrans_type().equals("transfer")){
+            double transferTotalBalance = 0.00;
+            double tansferBalance = accountDao.findTotal(newObject.getTo_account());
+            double transferAmount = newObject.getAmount();
+            transferTotalBalance = tansferBalance + Math.abs(transferAmount);
+            if( !accountDao.updateBalance(transferTotalBalance, newObject.getTo_account())){
+                throw new RuntimeException();
+            }
         }
         logger.info("The transaction has been persisted: " + newObject);
         return newObject;
@@ -138,9 +157,32 @@ public class TransService implements Serviceable<Trans> {
         }
 
         // TODO: Will implement with JDBC (connecting to our database)
-        if( !transDao.update(updateObject) || !accountDao.updateBalance(updateObject.getAccount_number())){
+        if( !transDao.update(updateObject)){
             throw new RuntimeException();
         }
+
+        double totalBalance = 0.00;
+        double currentBalance = accountDao.findTotal(updateObject.getAccount_number());
+        double amount = updateObject.getAmount();
+        if(updateObject.getTrans_type().equals("deposit"))
+            totalBalance = currentBalance + Math.abs(amount);
+        else
+            totalBalance = currentBalance - Math.abs(amount);
+
+        if( !accountDao.updateBalance(totalBalance, updateObject.getAccount_number())){
+            throw new RuntimeException();
+        }
+
+        if(updateObject.getTrans_type().equals("transfer")){
+            double transferTotalBalance = 0.00;
+            double tansferBalance = accountDao.findTotal(updateObject.getTo_account());
+            double transferAmount = updateObject.getAmount();
+            transferTotalBalance = tansferBalance + Math.abs(transferAmount);
+            if( !accountDao.updateBalance(transferTotalBalance, updateObject.getTo_account())){
+                throw new RuntimeException();
+            }
+        }
+
         System.out.println("TransService::updateTrans() : Trans has been updated: " + updateObject);
         return updateObject;
     }

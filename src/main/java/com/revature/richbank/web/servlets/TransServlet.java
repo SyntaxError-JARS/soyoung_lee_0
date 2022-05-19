@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.revature.richbank.web.servlets.Authable.checkAuth;
+import static com.revature.richbank.web.servlets.Authable.getPathInfo;
 
 public class TransServlet extends HttpServlet implements Authable {
 
