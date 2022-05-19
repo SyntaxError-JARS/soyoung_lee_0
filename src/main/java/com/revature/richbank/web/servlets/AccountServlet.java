@@ -9,6 +9,7 @@ import com.revature.richbank.util.logging.Logger;
 
 import static com.revature.richbank.web.servlets.Authable.checkAuth;
 import static com.revature.richbank.web.servlets.Authable.getPathInfo;
+import static com.revature.richbank.web.servlets.Authable.getCurrencyFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -33,11 +34,18 @@ public class AccountServlet extends HttpServlet implements Authable {
 
             if (!checkAuth(req, resp)) return;
 
-            //String path = getPathInfo(req);
 
             if (req.getParameter("account_number") != null) {
                 Account account = accountService.readById(req.getParameter("account_number"));
                 String payload = mapper.writeValueAsString(account);
+
+
+                if( getPathInfo(req).equals("balance")){
+                    resp.getWriter().write("The balance of your account :" + account.getAccount_number()  +"\n");
+                    String total = getCurrencyFormat(account.getTotal());
+                    resp.getWriter().write(total + "\n\n" );
+                }
+
                 resp.getWriter().write(payload);
                 return;
             }
