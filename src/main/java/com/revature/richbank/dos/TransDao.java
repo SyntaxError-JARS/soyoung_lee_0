@@ -1,5 +1,6 @@
 package com.revature.richbank.dos;
 
+import com.revature.richbank.exceptions.ResourcePersistenceException;
 import com.revature.richbank.models.Trans;
 import com.revature.richbank.util.ConnectionFactory;
 import com.revature.richbank.util.logging.Logger;
@@ -143,6 +144,10 @@ public class TransDao implements Crudable<Trans> {
             ps.setInt(1, Integer.parseInt(trans_id)); // Wrapper class
             ResultSet rs = ps.executeQuery(); // remember DQL, select is only keywords for Query
 
+            if(!rs.next()){
+                throw new ResourcePersistenceException("This transaction was not found in the database, please check trans_id entered was correct.");
+            }
+
             Trans trans = new Trans();
 
             trans.setTrans_id( rs.getInt(   "trans_id"));
@@ -164,34 +169,21 @@ public class TransDao implements Crudable<Trans> {
 
         logger.info("TransDao::findTotalBalance() : find the total balance by account_number: " + account_number );
 
-
+        double tot_balance = 0.00;
         try(Connection conn = ConnectionFactory.getInstance().getConnection();) {
 
-            // TODO : Later I will make a view with name "trans_inf0"
-            //        for the detail information for a transaction
-            //        with customer table and account table
-            //          String sql = "select * from trans where trans_id = ?";
-
-            String sql = "select * from trans where trans_id = ?";
+            String sql = "select sum(amount) as tot_balance from trans where account_number = ? group by account_number";
             PreparedStatement ps = conn.prepareStatement(sql);
 
-            ps.setInt(1, Integer.parseInt(trans_id)); // Wrapper class
+            ps.setString(1, account_number); // Wrapper class
             ResultSet rs = ps.executeQuery(); // remember DQL, select is only keywords for Query
 
-            Trans trans = new Trans();
-
-            trans.setTrans_id( rs.getInt(   "trans_id"));
-            trans.setAccount_number(rs.getString("account_number"));
-            trans.setTrans_type(rs.getString("trans_type"));
-            trans.setTrans_date(rs.getString("trans_date"));
-            trans.setFrom_account(rs.getString("from_account"));
-            trans.setTo_account(rs.getString("to_account"));
-            trans.setAmount(rs.getDouble("amount"));
-
-            return trans;
+            tot_balance = rs.getDouble("tot_balance");
+            return tot_balance;
 
         } catch (SQLException e) {
-            return null;
+            e.printStackTrace();
+            return tot_balance;
         }
     }
 

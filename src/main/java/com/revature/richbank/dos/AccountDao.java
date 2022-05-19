@@ -233,7 +233,7 @@ public class AccountDao implements Crudable<Account> {
             ResultSet rs = ps.executeQuery(); // remember DQL, select is only keywords for Query
 
             if(!rs.next()){
-                throw new ResourcePersistenceException("This account was not found in the database, please check ID entered was correct.");
+                throw new ResourcePersistenceException("This account was not found in the database, please check account_number entered was correct.");
             }
 
              total = rs.getDouble("total");
@@ -245,6 +245,43 @@ public class AccountDao implements Crudable<Account> {
             return total;
         }
 
+    }
+
+    public boolean updateBalance(String account_number) {
+        logger.info("AccountDao::updateBalance() : update a amount with account_number: "  + account_number);
+
+        try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
+
+            //String sql = "update account set total = ? where account_number = ?";
+            String sql = "UPDATE account a" +
+                        "    SET total = t.tot_balance" +
+                        "FROM (SELECT account_number," +
+                                "SUM( case " +
+                                " when trans_type = 'deposit' then ABS(t.amount) " +
+                                " when trans_type = 'transfer' then -ABS(t.amount) " +
+                                " when trans_type = 'withdraw' then -ABS(t.amount) " +
+                                " else 0.00 " +
+                                " end " +
+                            " ) as tot_balance" +
+                            " FROM trans t" +
+                            " where account_number = ? " +
+                            " GROUP BY account_number" +
+                        " ) t" +
+                        "WHERE a.account_number = t.account_number";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, account_number);
+
+            int checkUpdate = ps.executeUpdate();
+            if (checkUpdate == 0) {
+                throw new RuntimeException();
+            } else return true;
+
+        } catch (SQLException | RuntimeException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override

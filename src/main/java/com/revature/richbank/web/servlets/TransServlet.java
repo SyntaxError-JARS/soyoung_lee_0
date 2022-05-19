@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.revature.richbank.web.servlets.Authable.checkAuth;
@@ -52,6 +53,7 @@ public class TransServlet extends HttpServlet implements Authable {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         Trans trans = mapper.readValue(req.getInputStream(), Trans.class);
+
         Trans persistedTrans = transService.create(trans);
 
         String payload = mapper.writeValueAsString(persistedTrans);

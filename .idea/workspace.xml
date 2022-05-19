@@ -8,9 +8,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/richbank/dos/AccountDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/dos/AccountDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/richbank/dos/TransDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/dos/TransDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/richbank/services/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/services/AccountService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/richbank/services/TransService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/services/TransService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/richbank/web/servlets/AccountServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/web/servlets/AccountServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/revature/richbank/web/servlets/TransServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/revature/richbank/web/servlets/TransServlet.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
