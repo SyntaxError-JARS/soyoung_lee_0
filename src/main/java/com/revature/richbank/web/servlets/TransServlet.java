@@ -52,17 +52,23 @@ public class TransServlet extends HttpServlet implements Authable {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        if(!checkAuth(req, resp)) return;
+
         Trans trans = mapper.readValue(req.getInputStream(), Trans.class);
 
         Trans persistedTrans = transService.create(trans);
 
         String payload = mapper.writeValueAsString(persistedTrans);
+        resp.getWriter().write("Persisted the provided transaction as show below \n");
         resp.getWriter().write(payload);
         resp.setStatus(201);    // success to create
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        if(!checkAuth(req, resp)) return;
+
         Trans trans = mapper.readValue(req.getInputStream(), Trans.class);
         Trans persistedTrans = transService.update(trans);
 
@@ -73,7 +79,10 @@ public class TransServlet extends HttpServlet implements Authable {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp);
+        if(!checkAuth(req, resp)) return;
+
+        resp.getWriter().write("Deletion of transaction is not allowed.\n");
+        resp.setStatus(405);
     }
 
 }

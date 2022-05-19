@@ -36,8 +36,9 @@ public class AccountService implements Serviceable <Account> {
         if(newAccount == null) return false;
         if(newAccount.getAccount_number() == null || newAccount.getAccount_number().trim().equals("")) return false;
         if(newAccount.getAccount_type() == null || newAccount.getAccount_type().trim().equals("")) return false;
+
         if(newAccount.getFirst_date() == null || newAccount.getFirst_date().trim().equals("")) newAccount.setFirst_date(LocalDate.now().toString());
-        if( newAccount.getAccount_type().trim().equals("closed") && (newAccount.getLast_date() == null || newAccount.getLast_date().trim().equals("")) )
+        if( newAccount.getAccount_type().trim().equals("closed") )
             newAccount.setLast_date(LocalDate.now().toString());
         if(newAccount.getCustomer_id_1() == 0) return false;
         if(newAccount.getTotal() < 0) return false;
@@ -53,6 +54,8 @@ public class AccountService implements Serviceable <Account> {
             //System.out.println("User was not validated");
             throw new InvalidRequestException("Account information was not validated");
         }
+
+        newObject.setFirst_date(LocalDate.now().toString());
 
         // TODO: Will implement with JDBC (connecting to our database)
         Account persistedAccount = accountDao.create(newObject);
@@ -129,6 +132,10 @@ public class AccountService implements Serviceable <Account> {
     public boolean delete(String account_number) {
         System.out.println("AccountService::delete() : Customer tries to delete an account: " + account_number);
         logger.info("Customer tries to delete an account: " + account_number);
+
+        if( !customerDao.delete(account_number)){
+            throw new RuntimeException();
+        }
 
         return customerDao.delete(account_number);
     }
