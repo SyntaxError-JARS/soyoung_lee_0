@@ -315,7 +315,7 @@ public class AccountDao implements Crudable<Account> {
 
         try (Connection conn = ConnectionFactory.getInstance().getConnection();) {
 
-            String sql = "update account set account_type = ?, last_date = ?, interest = ?, total = ? where account_number = ?";
+            String sql = "update account set account_type = ?, last_date = ?, interest = ?, total = ?, customer_id_1 = ?, customer_id_2 = ? where account_number = ?";
 
             PreparedStatement ps = conn.prepareStatement(sql);
 
@@ -323,7 +323,9 @@ public class AccountDao implements Crudable<Account> {
             ps.setString(2, updateAccount.getLast_date());
             ps.setDouble(3, updateAccount.getInterest());
             ps.setDouble(4, updateAccount.getTotal());
-            ps.setString(5, updateAccount.getAccount_number());
+            ps.setInt(5, updateAccount.getCustomer_id_1());
+            ps.setInt(6, updateAccount.getCustomer_id_2());
+            ps.setString(7, updateAccount.getAccount_number());
 
             int checkUpdate = ps.executeUpdate();
             if (checkUpdate == 0) {
